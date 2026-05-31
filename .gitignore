@@ -1,0 +1,19 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Editores
+.vscode/
+.idea/
+*.swp
+
+# Ambientes locais
+.env
+.venv/
+__pycache__/
+
+# Arquivos temporarios de skills (PDFs baixados, dados, saidas)
+*.pdf
+*.csv
+*.pkl
+*.joblib

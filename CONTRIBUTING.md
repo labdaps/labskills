@@ -47,7 +47,8 @@ Regras do `description`:
 2. Crie `skills/minha-skill/SKILL.md` seguindo o formato acima.
 3. Teste localmente: copie para `~/.claude/skills/` e acione no Claude Code para confirmar que ela dispara e funciona.
 4. Adicione a skill na tabela do [README.md](README.md).
-5. Commit e abra um Pull Request descrevendo o que a skill faz e em qual cenário do laboratório ela ajuda.
+5. Valide antes de subir: `python scripts/validate_skills.py` (checa frontmatter, nome da pasta, link no README e ausência de segredos). O CI roda essa mesma checagem em cada PR.
+6. Commit e abra um Pull Request descrevendo o que a skill faz e em qual cenário do laboratório ela ajuda.
 
 ## Padrões do repositório
 

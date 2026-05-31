@@ -8,12 +8,18 @@ Uma skill é um conjunto de instruções em Markdown que o Claude Code carrega s
 
 ## Skills disponíveis
 
+### DataSUS e pipeline do laboratório
+
+| Skill | O que faz |
+|-------|-----------|
+| [datasus-outcome](skills/datasus-outcome/SKILL.md) | Adiciona um novo desfecho preditivo ao pipeline [datasus-ai-prediction](https://github.com/fabianofilho/datasus-ai-prediction): subclasse de `OutcomeConfig`, registro e checklist anti-leakage. |
+
 ### Ciência de dados e ML
 
 | Skill | O que faz |
 |-------|-----------|
-| [ml-pipeline](skills/ml-pipeline/SKILL.md) | Pipeline padrão de ML para projetos de saúde: data loading, preprocessing, treino e avaliação com métricas clínicas. |
-| [ml-eval-report](skills/ml-eval-report/SKILL.md) | Gera relatório completo de avaliação de modelo: métricas, gráficos e comparação. |
+| [ml-pipeline](skills/ml-pipeline/SKILL.md) | Pipeline padrão de ML para projetos de saúde, alinhado às convenções do datasus-ai-prediction (train_cv, OOF probs, calibração, janelas temporais). |
+| [ml-eval-report](skills/ml-eval-report/SKILL.md) | Relatório de avaliação reusando `core/models/evaluation.py`: ROC, PR, calibração, SHAP, métricas por subgrupo e comparação entre estados/períodos. |
 | [ml-timeseries](skills/ml-timeseries/SKILL.md) | Setup de modelos de séries temporais em saúde (skforecast, ARIMA, LSTM, Prophet). |
 
 ### Pesquisa e escrita científica

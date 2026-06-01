@@ -26,7 +26,8 @@ Uma skill é um conjunto de instruções em Markdown que o Claude Code carrega s
 
 | Skill | O que faz |
 |-------|-----------|
-| [paper-review](skills/paper-review/SKILL.md) | Leitura crítica estruturada de artigo: resumo, metodologia, pontos fortes e fracos. |
+| [paper-review](skills/paper-review/SKILL.md) | Leitura crítica estruturada de artigo externo: resumo, metodologia, pontos fortes e fracos. |
+| [peer-review](skills/peer-review/SKILL.md) | Simula revisão por pares do seu próprio manuscrito antes de submeter: nota 1-5 por dimensão (Abstract, Métodos, Resultados, etc.), lista de revisões prioritárias e decisão editorial (Aceito / Revisões menores / Revisões maiores / Rejeitar). |
 | [paper-scaffold](skills/paper-scaffold/SKILL.md) | Estrutura de artigo com seções, checklist e template LaTeX/Markdown. |
 | [artigo](skills/artigo/SKILL.md) | Pipeline em 7 fases de escrita de artigo em IA médica com reporting guidelines (TRIPOD+AI, STROBE, PRISMA, CONSORT, STARD). |
 | [radar-academico](skills/radar-academico/SKILL.md) | Busca semanal de papers por tema, filtra, baixa PDFs e resume. |
@@ -47,10 +48,10 @@ O script copia as skills para `~/.claude/skills/`, deixando-as disponíveis em q
 ### Instalar uma skill específica
 
 ```bash
-cp -r skills/ml-pipeline ~/.claude/skills/
+cp -r skills/peer-review ~/.claude/skills/
 ```
 
-Depois é só acionar no Claude Code: `/ml-pipeline` ou pedir em linguagem natural ("monta o pipeline de ML deste projeto").
+Depois é só acionar no Claude Code: `/peer-review` ou pedir em linguagem natural ("faz peer review do meu manuscrito", "revisa meu artigo como revisor de journal").
 
 ## Como contribuir
 

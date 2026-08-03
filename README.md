@@ -18,6 +18,7 @@ Uma skill é um conjunto de instruções em Markdown que o Claude Code carrega s
 
 | Skill | O que faz |
 |-------|-----------|
+| [graph-lab](skills/graph-lab/SKILL.md) | Modela o experimento como grafo dirigido antes de rodar código, no formato de projeto de 7 fases do laboratório: cada etapa vira nó com métrica de sucesso, e efeitos colaterais entre métricas (imputação vs. calibração, seleção de features vs. interpretabilidade) são auditados antes da execução. |
 | [ml-pipeline](skills/ml-pipeline/SKILL.md) | Pipeline padrão de ML para projetos de saúde, alinhado às convenções do datasus-ai-prediction (train_cv, OOF probs, calibração, janelas temporais). |
 | [ml-eval-report](skills/ml-eval-report/SKILL.md) | Relatório de avaliação reusando `core/models/evaluation.py`: ROC, PR, calibração, SHAP, métricas por subgrupo e comparação entre estados/períodos. |
 | [ml-timeseries](skills/ml-timeseries/SKILL.md) | Setup de modelos de séries temporais em saúde (skforecast, ARIMA, LSTM, Prophet). |

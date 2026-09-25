@@ -255,11 +255,12 @@ class TestSintaxeAceita(unittest.TestCase):
         self.assertEqual(nodes, {"A", "B"})
         self.assertEqual(deps, [("A", "B")])
 
-    def test_template_da_skill_valida(self):
-        with open(os.path.join(ROOT, "templates", "task-graph.template.md"),
-                  encoding="utf-8") as f:
-            code, out = run_cli(f.read())
-        self.assertEqual(code, 0, out)
+    def test_template_e_exemplo_da_skill_validam(self):
+        for rel in ("templates/task-graph.template.md", "examples/example-refactor.md"):
+            with self.subTest(arquivo=rel):
+                with open(os.path.join(ROOT, rel), encoding="utf-8") as f:
+                    code, out = run_cli(f.read())
+                self.assertEqual(code, 0, out)
 
 
 class TestFalhaFechada(unittest.TestCase):

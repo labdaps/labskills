@@ -45,13 +45,15 @@ cd labskills
 ./install.sh
 ```
 
-O script copia as skills para `~/.claude/skills/`, deixando-as disponíveis em qualquer projeto do Claude Code.
+O script copia as skills para `~/.claude/skills/`, deixando-as disponíveis em qualquer projeto do Claude Code. Rodar de novo, depois de um `git pull`, atualiza os arquivos já instalados. A pasta `tests/` de uma skill fica de fora: ela guarda os testes dos scripts, que rodam no CI deste repositório e não servem à skill instalada.
 
 ### Instalar uma skill específica
 
 ```bash
 cp -r skills/peer-review ~/.claude/skills/
 ```
+
+Na cópia manual de uma skill com `tests/` (hoje, a `graph-lab`), apague essa pasta do destino.
 
 Depois é só acionar no Claude Code: `/peer-review` ou pedir em linguagem natural ("faz peer review do meu manuscrito", "revisa meu artigo como revisor de journal").
 

@@ -92,5 +92,10 @@ graph TD
 
 ## Página do grafo
 
-- Caminho: `graphs/task-graph.html`
+<!-- ao fim de cada rodada: a estável e o snapshot da rodada, idênticos, e uma
+     linha nova no índice. Snapshot de rodada anterior nunca é editado. -->
+
+- Página estável: `graphs/task-graph.html`, sempre o mesmo caminho
 - URL publicada: {{preencher na primeira publicação e reutilizar sempre}}
+- Snapshot desta rodada: `graphs/{{INICIAIS}}-v{{N}}-{{AAAA-MM-DD}}.html`, cópia idêntica da estável
+- Índice das versões: `graphs/README.md` (versão, data, arquivo, o que mudou)

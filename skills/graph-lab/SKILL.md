@@ -35,7 +35,8 @@ Se a tarefa for pontual, de 1 a 2 passos, sem dependência cruzada nem métrica 
 | Artefato | Onde | Por quê |
 |---|---|---|
 | `task-graph.md` | raiz do repositório do projeto | é a fonte da verdade da rodada, e todo update de status acontece nele |
-| `graphs/task-graph.html` | repositório do projeto, versionado | é entregável, precisa sobreviver ao fim da sessão |
+| `graphs/task-graph.html` | repositório do projeto, versionado, sempre o mesmo caminho | é a página publicada, e o caminho fixo preserva a URL |
+| `graphs/<INICIAIS>-v<N>-<AAAA-MM-DD>.html` e `graphs/README.md` | repositório do projeto, versionados | snapshot de cada rodada e o índice deles: mostram quando e por que a conclusão mudou |
 | entregáveis dos nós (código, CSV de métricas, figuras, modelos) | repositório do projeto | são os números daquela rodada |
 | aprendizado de ferramenta e método | `docs/aprendizados-pipeline-agentes.md` do ai-lab-hub | é o que outro experimento, com outro dado, consegue reusar |
 
@@ -127,7 +128,20 @@ Siga a ordem topológica. Para cada nó: marque `in_progress` ao começar, verif
 
 ### 5. RENDER (obrigatório ao final de cada rodada)
 
-Gere a página HTML em `graphs/task-graph.html`, versionada no repositório do experimento, com nome de arquivo estável. A cada replanejamento, **reescreva o mesmo arquivo e republique o mesmo caminho**, para preservar a URL de quem já recebeu o link. Se a página já foi publicada em outra sessão, reaproveite a URL existente ao republicar.
+Ao fim de cada rodada, gere a página HTML e grave duas cópias idênticas, versionadas no repositório do projeto, nunca no diretório temporário da sessão:
+
+- **`graphs/task-graph.html`**, com nome estável: sempre o mesmo caminho. É a página que se publica, e republicar sempre a partir dela preserva a URL de quem já recebeu o link. Se a página já foi publicada em outra sessão, reaproveite a URL existente ao republicar.
+- **`graphs/<INICIAIS>-v<N>-<AAAA-MM-DD>.html`**, o snapshot da rodada, cópia byte a byte da estável. INICIAIS são as iniciais do projeto em maiúsculas, tiradas do nome do repositório (`transfer-learning-iacov-br` vira `TLI`); N começa em 1 e sobe uma vez por rodada; a data é a do fechamento da rodada.
+
+`graphs/README.md` é o índice dos snapshots: a URL publicada da página estável no topo e uma linha por versão.
+
+```
+| versão | data | arquivo | o que mudou em relação à anterior |
+|---|---|---|---|
+| v2 | AAAA-MM-DD | TLI-v2-AAAA-MM-DD.html | nó de calibração entrou por replanejamento; a manchete passou a ser a calibração |
+```
+
+**Snapshot de rodada anterior nunca é editado.** Ele é o registro do que a página dizia naquela data, e é o que mostra quando e por que a conclusão mudou. Correção de texto ou de cor antes de a rodada fechar reescreve a estável e o snapshot da rodada juntos, para que continuem idênticos. O `task-graph.md`, com o Mermaid, continua sendo a fonte que o validador confere; a página é derivada dele e dos entregáveis dos nós.
 
 Conteúdo, nesta ordem:
 
@@ -135,7 +149,7 @@ Conteúdo, nesta ordem:
 2. **O grafo desenhado**, com estado de cada nó em cor, dependências sólidas, efeitos colaterais tracejados com o sinal distinguido, e marcação visual nos nós que entraram por replanejamento.
 3. **Tabela nó a nó com o resultado medido**, não com a descrição do que o nó deveria fazer.
 4. **Os gráficos das métricas que estavam em tensão**, com intervalo de confiança e a linha de referência que separa resultado de ruído (a baseline, o acaso, o escore clínico já usado na prática).
-5. **O que o modelo final usa por dentro**: importância SHAP com a direção de cada variável, e marcação visual nas variáveis cuja direção contraria o esperado clinicamente. Sem essa seção a página mostra desempenho e esconde conteúdo, que é exatamente o que a pessoa de domínio precisa ler para dar parecer.
+5. **O que o entregável final usa por dentro**, não só como ele se sai. No perfil saúde/ML é a importância SHAP do modelo final com a direção de cada variável, e marcação visual nas variáveis cuja direção contraria o esperado clinicamente. Sem essa seção a página mostra desempenho e esconde conteúdo, que é exatamente o que a pessoa de domínio precisa ler para dar parecer.
 6. **Os achados que exigem decisão de outra pessoa**, cada um com o número que o sustenta.
 7. **O que ficou pendente e por quê**, com o motivo real do bloqueio.
 
@@ -145,7 +159,9 @@ Gere os gráficos por código, como SVG a partir de um array de dados. Não embu
 
 A volta ao lugar é obrigatória: a posição por nível topológico **é** a ordem de execução, e reposicionar em definitivo faz o grafo mentir sobre ela.
 
-Armadilhas que costumam quebrar a página: converta o deslocamento do ponteiro pela razão entre a largura do viewBox e a largura renderizada, use `touch-action: none` no nó, distinga clique de arrasto por distância acumulada, respeite `prefers-reduced-motion`, faça a panorâmica por `scrollLeft` e `scrollTop` do visor (e só para mouse), e no handler do fundo desista quando `ev.target.closest(".no")` achar um nó. Atributos de apresentação do SVG (`fill`, `stroke`) não aceitam `var(--token)` de forma confiável: use classes CSS.
+Armadilhas que costumam quebrar a página: converta o deslocamento do ponteiro pela razão entre a largura do viewBox e a largura renderizada, use `touch-action: none` no nó, distinga clique de arrasto por distância acumulada, respeite `prefers-reduced-motion`, faça a panorâmica por `scrollLeft` e `scrollTop` do visor (e só para mouse), e no handler do fundo desista quando `ev.target.closest(".no")` achar um nó. Atributos de apresentação do SVG (`fill`, `stroke`) não aceitam `var(--token)` de forma confiável: use classes CSS. Use pointer events com `setPointerCapture` e trate `pointercancel`; no `<dialog>`, feche pelo backdrop só depois de comparar as coordenadas do clique com `getBoundingClientRect()`. Cada nó recebe `tabindex="0"`, `role="button"` e `aria-label`, e responde a Enter e Espaço. Diga na legenda o que dá para fazer: interação que ninguém descobre é o mesmo que não existir.
+
+Antes de publicar, confira por script que toda aresta aponta para nó existente, que nenhuma caixa se sobrepõe a outra, que tudo cabe no viewBox e que nenhum rótulo estoura a caixa.
 
 **Honestidade da página.** Os números vêm dos entregáveis dos nós, nunca de memória. Nó `pending` aparece como pendente, não como "em andamento". Se a versão anterior dizia outra coisa, diga o que mudou e por quê, em vez de reescrever a história.
 

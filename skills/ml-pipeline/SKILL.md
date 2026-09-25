@@ -7,6 +7,8 @@ description: Pipeline padrao de ML para projetos de saude. Data loading, preproc
 
 Cria ou modifica pipeline de Machine Learning para projetos de saude.
 
+**Esta skill implementa, nao decide.** As decisoes de metodo (separacao, faltantes, sentinelas, encoding, balanceamento, modelos, metrica, ponto de corte, calibracao) sao da skill `ml-checkpoints`, que e a norma do laboratorio, e ficam registradas no `pipeline-decisions.md` do projeto. O porque de cada regra esta em `docs/aprendizados-pipeline-agentes.md`, no ai-lab-hub. Sem `pipeline-decisions.md`, rode a `ml-checkpoints` antes de escrever o pipeline. Se o codigo pedir uma decisao que nao esta registrada, pare e decida pela `ml-checkpoints`, em vez de escolher um padrao aqui.
+
 ## Estrutura padrao
 
 ```
@@ -27,48 +29,47 @@ configs/          # hiperparametros
 ### 1. Data Loading
 
 - Identificar fonte (CSV, Parquet, DataSUS, API)
-- Carregar com dtypes corretos
+- Carregar com dtypes corretos: codigo (municipio, CID, categoria do DataSUS) entra como texto ou categoria, nunca como quantidade
 - Documentar shape, colunas, tipos
 
-### 2. Preprocessing
+### 2. Separacao, antes de qualquer ajuste
 
-- Missing values: avaliar padrao (MCAR/MAR/MNAR)
-- Sentinel values: 9, 99, 999 sao comuns em dados de saude
-- Encoding: OneHot para categoricas baixa cardinalidade, Target/Label para alta
-- Scaling: StandardScaler para modelos lineares, desnecessario para tree-based
+Separe treino e teste antes de ajustar qualquer coisa, inclusive a busca de hiperparametros, pelo esquema do CP2 da `ml-checkpoints`: por grupo (StratifiedGroupKFold) quando um identificador repete, temporal quando a pergunta e se o modelo envelhece. Tudo o que aprende com o dado (imputacao, encoding, escalonamento, selecao, balanceamento, tuning) vive dentro do fold de treino, num `Pipeline` do sklearn ou do imblearn.
 
-### 3. Feature Engineering
+### 3. Preprocessing
 
-- Criar features clinicamente relevantes
-- Feature selection: importancia, correlacao, VIF
+Aplique o que o `pipeline-decisions.md` registrou no CP3 e no CP4 da `ml-checkpoints`:
+- Missing: estrategia coluna a coluna, com indicador quando o CP3 pedir
+- Sentinelas: por variavel, a partir do dicionario da base, antes de codificar e imputar. Nunca a mesma lista de valores no dado inteiro
+- Encoding fixo: mapa de categorias tirado do dicionario, categorica mantida como categoria ate o pipeline e encoder ajustado no fold. Nada de `pd.Categorical(col).codes`, que numera o que aparece na amostra
+- Scaling: conforme a familia de modelo (CP4 e CP6)
+
+### 4. Feature Engineering
+
+- Criar features clinicamente relevantes, todas disponiveis no momento da predicao (CP1)
+- Selecao de features dentro do fold, pelo criterio do CP7
 - Documentar cada feature criada e justificativa clinica
 
-### 4. Treinamento
+### 5. Treinamento
 
-Algoritmos preferidos (ordem):
-1. LightGBM (padrao)
+Os candidatos saem do CP6, sempre com a baseline (logistica ou escore clinico) na mesma particao. Algoritmos que o lab costuma usar:
+1. LightGBM
 2. XGBoost
 3. CatBoost
 4. Random Forest
 5. Logistic Regression (baseline)
 6. TabPFN (datasets pequenos < 10K)
 
-Cross-validation: StratifiedKFold (k=5 ou k=10)
-Balanceamento: SMOTE ou class_weight='balanced'
+Cross-validation: o esquema registrado no CP2 (StratifiedGroupKFold quando o identificador repete; StratifiedKFold so sem repeticao)
+Balanceamento: nenhum, por padrao (CP5). `class_weight` so com a calibracao medida antes e depois (Brier e slope). Reamostragem (SMOTE) raramente, sempre dentro do fold de treino, nunca antes do split, e com recalibracao obrigatoria (CP9)
 
-### 5. Avaliacao
+### 6. Avaliacao
 
-Metricas obrigatorias para classificacao binaria:
-- AUROC, AUPRC
-- Sensibilidade, Especificidade
-- F1-Score
-- Calibration (Brier Score)
+Siga a skill `ml-eval-report`: a metrica principal do CP8, escolhida antes de rodar e reportada com IC, calibracao (CP9), ponto de corte fixado no treino pelo custo clinico e SHAP com direcao (CP10).
 
-Graficos: ROC curve, PR curve, calibration plot, feature importance.
+### 7. Salvar
 
-### 6. Salvar
-
-- Modelo: joblib/pickle com versao
+- Modelo: joblib/pickle com versao, junto com o encoder e o mapa de categorias
 - Metricas: JSON ou CSV
 - Graficos: PNG em results/
 
@@ -98,10 +99,10 @@ res = train_cv(
 
 Pontos-chave do padrao do lab:
 - **Out-of-fold probs**: metricas e graficos usam `oof_probs` (predicao de cada fold no seu hold-out), nao predicao no treino. Evita vazamento e da estimativa honesta.
-- **Balanceamento dentro do fold**: SMOTE ou `class_weight` so no treino de cada fold, nunca antes do split.
-- **Sentinels de saude**: 9, 99, 999 sao missing codificados no DataSUS. O preprocessor (`SentinelReplacer`) troca por NaN antes de imputar.
+- **Balanceamento**: `balancing="none"` e o padrao (CP5). Qualquer outro valor roda so no treino de cada fold e exige a calibracao medida antes e depois.
+- **Sentinelas**: o `SentinelReplacer` do app troca a mesma lista de valores em todas as colunas, o que contraria o CP3 (sentinela e por variavel). Deixe `null_sentinels` vazio e trate o ignorado coluna a coluna no preprocess do desfecho, a partir do dicionario.
 
-### Calibracao (sempre, em saude)
+### Calibracao (CP9)
 ```python
 cal = calibrate_model(model, X, y, method="sigmoid")  # sigmoid (Platt) | isotonic
 # cal traz: brier_before, brier_after, brier_delta, cal_model

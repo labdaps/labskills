@@ -55,7 +55,7 @@ Apresente ao usuário só o que exige decisão, não o relatório inteiro. E lev
 | imputação (CP3) | o imputador é aprendido dentro do fold, e o CP9 reporta calibração com e sem |
 | indicador de missing (CP3) | os indicadores entram como features e aparecem no SHAP do CP10 |
 | target encoding (CP4) | encoding dentro do fold, obrigatoriamente; fora dele é vazamento |
-| SMOTE ou reamostragem (CP5) | CP9 deixa de ser opcional: recalibrar e reportar Brier antes e depois |
+| class_weight, SMOTE ou reamostragem (CP5) | CP9 deixa de ser opcional: reportar Brier e slope antes e depois, e recalibrar |
 | modelo nativo a NaN (CP3, CP6) | trocar de família de modelo reabre o CP3 inteiro |
 | família de modelo (CP6) | reabre o CP4: árvore dispensa escalonamento, linear e SVM exigem |
 | seleção de features (CP7) | a seleção acontece dentro do fold, e o N de features entra no cálculo de casos por variável |
@@ -94,7 +94,7 @@ Se o modelo não bater a baseline, diga isso na primeira linha. Resultado negati
 
 ## Regras que não dependem do checkpoint
 
-- **Todo pré-processamento aprendido dentro do fold.** Imputação, encoding, escalonamento, seleção e balanceamento. Aprender no dado completo infla a métrica de um jeito indistinguível de sucesso.
+- **Separar antes de ajustar qualquer coisa, e todo pré-processamento aprendido dentro do fold.** Imputação, encoding, escalonamento, seleção, balanceamento e busca de hiperparâmetros só veem a partição de treino. Aprender no dado completo infla a métrica de um jeito indistinguível de sucesso.
 - **Dado bruto nunca no repositório.** O registro de decisões referencia o caminho, jamais o conteúdo.
 - **Nada de escolher o corte olhando o teste.**
 - **Métrica sem incerteza não é resultado.** Reporte IC, por bootstrap ou pela variação entre folds.
@@ -102,6 +102,8 @@ Se o modelo não bater a baseline, diga isso na primeira linha. Resultado negati
 ## Relação com as outras skills do laboratório
 
 Esta skill decide, as outras executam. Ela é o passo a passo interativo; a `graph-lab` é o planejamento do experimento inteiro como grafo antes de começar, e a `ml-pipeline` é a implementação padrão do laboratório.
+
+Esta skill é a norma de método do laboratório: as outras apontam para ela em vez de repetir regra própria. A evidência por trás das regras, o que já deu errado em projeto e por quê, está em `docs/aprendizados-pipeline-agentes.md`, no ai-lab-hub.
 
 | Momento | Skill |
 |---|---|

@@ -77,7 +77,7 @@ Este é o catálogo que dá valor ao grafo. Percorra a lista no CONNECT: para ca
 | Ação | Degrada | Por quê | Mitigação usual |
 |---|---|---|---|
 | imputação de missing | calibração, representatividade de subgrupo | a distribuição imputada não é a real, e o missing raramente é aleatório entre grupos | reportar resultado com e sem imputação, e o missing por subgrupo |
-| balanceamento de classe (SMOTE, undersampling, class weights) | calibração da probabilidade | a prevalência artificial desloca toda a probabilidade prevista | recalibrar após o balanceamento e reportar Brier antes e depois |
+| balanceamento de classe (SMOTE, undersampling, class weights) | calibração da probabilidade | a prevalência artificial desloca toda a probabilidade prevista | não balancear, que é o padrão (`ml-checkpoints`, CP5); se balancear, recalibrar e reportar Brier antes e depois |
 | exclusão de linhas com missing | equidade entre subgrupos, validade externa | quem tem mais missing costuma ser quem tem menos acesso, e some da amostra | comparar quem entrou e quem saiu, no mínimo em idade, sexo e região |
 | seleção agressiva de features | interpretabilidade clínica, validade externa | o modelo fica dependente de variáveis instáveis entre serviços | manter um modelo enxuto e clinicamente plausível como comparador |
 | tuning intensivo na mesma partição | generalização, validação externa | o hiperparâmetro aprende a partição, não o fenômeno | partição de tuning separada da de teste, e reportar as duas |

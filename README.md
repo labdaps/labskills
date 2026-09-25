@@ -12,7 +12,7 @@ Uma skill é um conjunto de instruções em Markdown que o Claude Code carrega s
 
 | Skill | O que faz |
 |-------|-----------|
-| [datasus-outcome](skills/datasus-outcome/SKILL.md) | Adiciona um novo desfecho preditivo ao pipeline [datasus-ai-prediction](https://github.com/fabianofilho/datasus-ai-prediction): subclasse de `OutcomeConfig`, registro e checklist anti-leakage. |
+| [datasus-outcome](skills/datasus-outcome/SKILL.md) | Adiciona um novo desfecho preditivo ao app [lab-ai-prediction](https://github.com/fabianofilho/lab-ai-prediction): subclasse de `OutcomeConfig`, registro, metodologia, censura e checklist anti-leakage. |
 
 ### Ciência de dados e ML
 
@@ -20,7 +20,7 @@ Uma skill é um conjunto de instruções em Markdown que o Claude Code carrega s
 |-------|-----------|
 | [graph-lab](skills/graph-lab/SKILL.md) | Modela a tarefa como grafo dirigido antes de rodar código: cada etapa vira nó com métrica de sucesso, e efeitos colaterais entre métricas (imputação vs. calibração, seleção de features vs. interpretabilidade) são auditados antes da execução. Perfil geral para engenharia e perfil saúde/ML, obrigatório quando a tarefa treina modelo, com as 7 fases de projeto do laboratório, checklist anti-leakage e regra de dados. É a skill de grafo canônica do laboratório e substitui a graph-init. |
 | [ml-checkpoints](skills/ml-checkpoints/SKILL.md) | Conduz o pipeline por checkpoints interativos: diagnostica a base carregada (missing, sentinelas, cardinalidade, repetição de paciente, vazamento) e em cada etapa oferece só as estratégias que os dados permitem, da separação à interpretabilidade, registrando cada decisão com o motivo medido. |
-| [ml-pipeline](skills/ml-pipeline/SKILL.md) | Pipeline padrão de ML para projetos de saúde, alinhado às convenções do datasus-ai-prediction (train_cv, OOF probs, calibração, janelas temporais). |
+| [ml-pipeline](skills/ml-pipeline/SKILL.md) | Pipeline padrão de ML para projetos de saúde: executa as decisões registradas pela ml-checkpoints e segue a API do [lab-ai-prediction](https://github.com/fabianofilho/lab-ai-prediction) (separação antes do tuning, train_cv, OOF probs, calibração, janelas temporais). |
 | [ml-eval-report](skills/ml-eval-report/SKILL.md) | Relatório de avaliação reusando `core/models/evaluation.py`: ROC, PR, calibração, SHAP, métricas por subgrupo e comparação entre estados/períodos. |
 | [ml-timeseries](skills/ml-timeseries/SKILL.md) | Setup de modelos de séries temporais em saúde (skforecast, ARIMA, LSTM, Prophet). |
 

@@ -73,41 +73,54 @@ Siga a skill `ml-eval-report`: a metrica principal do CP8, escolhida antes de ro
 - Metricas: JSON ou CSV
 - Graficos: PNG em results/
 
-## Convencoes do LABDAPS (datasus-ai-prediction)
+## Convencoes do LABDAPS (lab-ai-prediction)
 
-O pipeline de referencia do laboratorio e o [datasus-ai-prediction](https://github.com/fabianofilho/datasus-ai-prediction). Ao escrever codigo que vai conviver com ele, siga estas convencoes em vez do esqueleto generico acima.
+O app de referencia do laboratorio e o [lab-ai-prediction](https://github.com/fabianofilho/lab-ai-prediction). O datasus-ai-prediction e o fork labdaps/datasus-ai-prediction sao linhagens arquivadas: nao escreva codigo contra elas. Ao escrever codigo que vai conviver com o app, use a API abaixo; as decisoes de metodo continuam vindo da `ml-checkpoints`. Aqui fica so a assinatura minima: na duvida, o codigo do app e a fonte.
 
 ### Modulos
 - `core/outcomes/` - cada desfecho e uma subclasse de `OutcomeConfig` (ver skill `datasus-outcome`).
 - `core/features/cohort.py` - `CohortBuilder(outcome).build(raw) -> cohort`, depois `.get_Xy(cohort) -> (X, y)` e `.split(...)`.
-- `core/models/pipeline.py` - treino e calibracao.
+- `core/models/pipeline.py` - separacao, busca de hiperparametros, treino e calibracao.
 - `core/models/evaluation.py` - graficos Plotly (ver skill `ml-eval-report`).
-- `core/data/` - downloaders por sistema (SIH, SIM, SINASC, SINAN) e `linker.py` para record linkage.
+- `core/data/` - downloaders por sistema (SIH, SIM, SINASC, SINAN_*) e `linker.py` para record linkage.
 
 ### Treino (assinatura real)
 ```python
-from core.models.pipeline import train_cv, calibrate_model
+from core.models.pipeline import (
+    split_train_test, optimize_hyperparams, build_pipeline, train_cv, calibrate_model,
+)
 
+# Holdout ou corte temporal: separe antes da busca de hiperparametros
+X_tr, X_te, y_tr, y_te = split_train_test(X, y, "holdout", holdout_size=0.2)
+# ou split_train_test(X, y, "temporal", dates=datas, cutoff="AAAA-MM-DD")
+params = optimize_hyperparams(X_tr, y_tr, algorithm="lgbm", seed=42)  # a busca so ve o treino
+pipe = build_pipeline(X_tr, "lgbm", params, balancing="none").fit(X_tr, y_tr)
+
+# Validacao cruzada com probabilidades out-of-fold
 res = train_cv(
     X, y,
-    algorithm="lgbm",      # lgbm | xgb | catboost | rf | logreg
-    n_folds=5,             # StratifiedKFold(shuffle=True, random_state=42)
-    balancing="none",      # none | smote_over | class_weight
+    algorithm="lgbm",      # lgbm | xgb | catboost | rf | logreg | mlp (tabpfn, se instalado)
+    params=params_fixos,   # hiperparametro buscado na mesma coorte aqui exige CV aninhada
+    n_folds=5,             # StratifiedKFold(shuffle=True, random_state=42), sem grupo
+    balancing="none",      # none | class_weight | smote_over | smote_under
 )
-# res traz: fold_metrics, mean_metrics, oof_probs, feature_importances, model, X_columns
+# res traz: fold_metrics, mean_metrics, oof_probs, feature_importances, model, X_columns, algorithm
 ```
 
 Pontos-chave do padrao do lab:
 - **Out-of-fold probs**: metricas e graficos usam `oof_probs` (predicao de cada fold no seu hold-out), nao predicao no treino. Evita vazamento e da estimativa honesta.
-- **Balanceamento**: `balancing="none"` e o padrao (CP5). Qualquer outro valor roda so no treino de cada fold e exige a calibracao medida antes e depois.
+- **Sem grupo no `train_cv`**: ele usa StratifiedKFold por linha. Com identificador que repete, faca a separacao por grupo fora dele (CP2).
+- **Metricas no corte 0,5**: sensibilidade, especificidade e F1 de `fold_metrics` e `mean_metrics` saem no corte 0,5. Para o relatorio, recalcule no corte do CP8 (ver `ml-eval-report`).
+- **Balanceamento**: `balancing="none"` e o padrao (CP5). Qualquer outro valor roda so no treino de cada fold e exige a calibracao medida antes e depois. `class_weight` nao tem efeito em `xgb` nem em `mlp`.
 - **Sentinelas**: o `SentinelReplacer` do app troca a mesma lista de valores em todas as colunas, o que contraria o CP3 (sentinela e por variavel). Deixe `null_sentinels` vazio e trate o ignorado coluna a coluna no preprocess do desfecho, a partir do dicionario.
 
 ### Calibracao (CP9)
 ```python
 cal = calibrate_model(model, X, y, method="sigmoid")  # sigmoid (Platt) | isotonic
-# cal traz: brier_before, brier_after, brier_delta, cal_model
+# re-treina o modelo em 50%, ajusta o calibrador em 25% e mede o Brier nos 25% restantes
+# cal traz: cal_model, method, raw_probs, cal_probs, y_eval, brier_before, brier_after, brier_delta
 ```
-Modelo de risco clinico precisa de probabilidade calibrada, nao so de bom AUROC. Reporte o Brier antes e depois.
+Modelo de risco clinico precisa de probabilidade calibrada, nao so de bom AUROC. Reporte o Brier antes e depois. Se a particao estratificada falhar (desfecho rarissimo), a funcao cai para um modo que mede o Brier na propria fracao de calibracao, e o antes e depois deixa de ser held-out: diga isso no relatorio.
 
 ### Janelas temporais
 Todo desfecho define `observation_window_days` (look-back das features) e `prediction_window_days` (look-ahead do desfecho). Garanta que nenhuma feature use informacao posterior ao fim da janela de observacao (sem leakage temporal).

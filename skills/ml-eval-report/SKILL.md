@@ -70,9 +70,9 @@ Se houver multiplos modelos, gerar tabela comparativa e grafico de barras.
 - Graficos em `results/figures/`
 - Print resumo no terminal
 
-## Convencoes do LABDAPS (datasus-ai-prediction)
+## Convencoes do LABDAPS (lab-ai-prediction)
 
-No pipeline do laboratorio ([datasus-ai-prediction](https://github.com/fabianofilho/datasus-ai-prediction)) a avaliacao ja esta pronta em `core/models/evaluation.py`, com graficos **Plotly** (interativos, nao matplotlib). Reuse essas funcoes em vez de reimplementar.
+No app de referencia do laboratorio ([lab-ai-prediction](https://github.com/fabianofilho/lab-ai-prediction)) a avaliacao ja esta pronta em `core/models/evaluation.py`, com graficos **Plotly** (interativos, nao matplotlib). Reuse essas funcoes em vez de reimplementar. O datasus-ai-prediction e uma linhagem arquivada.
 
 ### Use as out-of-fold probs
 O `train_cv` devolve `oof_probs`. Todos os graficos recebem `(y_true, oof_probs)`, nao predicao no treino.
@@ -96,9 +96,9 @@ ev.shap_waterfall_chart(res["model"], X, case_idx=0)  # explicacao de um caso
 ```
 
 ### Equidade: metricas por subgrupo
-Modelo clinico precisa ser auditado por subgrupo (sexo, raca/cor, faixa etaria, regiao). Nao reporte so a metrica agregada.
+Modelo clinico precisa ser auditado por subgrupo (sexo, raca/cor, faixa etaria, regiao). Nao reporte so a metrica agregada, e liste os subgrupos que a tabela omitiu.
 ```python
-ev.subgroup_metrics_table(y, res["oof_probs"], groups)  # AUROC/sens/esp por grupo
+ev.subgroup_metrics_table(y, res["oof_probs"], groups)  # AUROC e AUPRC por grupo; omite grupo com N < 20 ou sem evento
 ev.threshold_metrics(y, res["oof_probs"], threshold=corte)  # corte do CP8, nunca o default 0,5
 ```
 

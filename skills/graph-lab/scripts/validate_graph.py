@@ -35,9 +35,11 @@ from collections import defaultdict, deque
 MERMAID_RE = re.compile(r"```mermaid\s*\n(.*?)```", re.DOTALL)
 
 # Statements que nao declaram no nem aresta (cabecalho, subgrafo, estilo).
+# A palavra-chave precisa terminar ali: '-' logo depois faz parte de um id
+# (class-weight --> calib), e a linha tem de ser lida como aresta.
 SKIP_RE = re.compile(
     r"(?:graph|flowchart|subgraph|end|classDef|class|style|linkStyle|click"
-    r"|direction|accTitle|accDescr)\b"
+    r"|direction|accTitle|accDescr)(?![\w-])"
 )
 # Id de no: letras, digitos e '_', com '-' so entre eles (A-->B e A, --> B).
 ID_RE = re.compile(r"\w+(?:-\w+)*")

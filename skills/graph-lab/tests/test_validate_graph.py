@@ -255,6 +255,14 @@ class TestSintaxeAceita(unittest.TestCase):
         self.assertEqual(nodes, {"A", "B"})
         self.assertEqual(deps, [("A", "B")])
 
+    def test_id_que_comeca_com_palavra_chave_e_aresta(self):
+        """'class-weight --> calib' nao e um statement 'class': a aresta conta."""
+        for no in ("class-weight", "graph-build", "end-to-end", "style-check"):
+            with self.subTest(no=no):
+                code, out = run_cli(mermaid(f"    {no} --> calib", f"    calib --> {no}"))
+                self.assertEqual(code, 1, out)
+                self.assertIn(f"  {no} --> calib\n", out)
+
     def test_template_e_exemplo_da_skill_validam(self):
         for rel in ("templates/task-graph.template.md", "examples/example-refactor.md"):
             with self.subTest(arquivo=rel):

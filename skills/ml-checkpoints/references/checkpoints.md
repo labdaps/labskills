@@ -67,7 +67,7 @@ Decida coluna a coluna, por faixa de missing:
 
 **A pergunta que decide:** o missing é diferente entre os grupos de desfecho, ou entre subgrupos como sexo, raça/cor e região. Se for, ele carrega informação, o indicador deixa de ser opcional e a exclusão de linhas passa a ser uma decisão sobre quem sai do estudo.
 
-**Sentinela é por variável, nunca global.** O código de ignorado depende do campo (9 em raça/cor, 99 em idade da mãe, 9999 em peso ao nascer), e o mesmo número é valor legítimo em outra coluna. Troque por ausente coluna a coluna, a partir do dicionário da base, antes da codificação e da imputação. Substituir a mesma lista de valores no dado inteiro apaga a idade de 9 anos e um nível arbitrário de cada categórica já codificada.
+**Sentinela é por variável, nunca global.** O código de ignorado depende do campo (no SINASC, 9 em escolaridade da mãe e em consultas de pré-natal, 0 em sexo), e o mesmo número é valor legítimo em outra coluna (9 em idade ou em Apgar). Troque por ausente coluna a coluna, a partir do dicionário da base, antes da codificação e da imputação. Substituir a mesma lista de valores no dado inteiro apaga a idade de 9 anos e um nível arbitrário de cada categórica já codificada.
 
 ## CP4: pré-processamento
 

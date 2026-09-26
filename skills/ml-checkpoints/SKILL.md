@@ -26,10 +26,10 @@ Um checkpoint por vez. Não adiante decisão futura nem peça tudo de uma vez: o
 Peça o caminho da base e a coluna do desfecho, e rode:
 
 ```bash
-python <pasta-desta-skill>/scripts/diagnose_data.py <arquivo> --target <desfecho> [--id <coluna>] [--date <coluna>]
+python "${CLAUDE_SKILL_DIR}/scripts/diagnose_data.py" <arquivo> --target <desfecho> [--id <coluna>] [--date <coluna>]
 ```
 
-A pasta da skill é `~/.claude/skills/ml-checkpoints/` quando instalada pelo `install.sh`. Aceita CSV, TSV, Parquet e Excel. Com `--json`, devolve o mesmo diagnóstico em formato de máquina.
+O Claude Code já entrega o caminho entre aspas resolvido para a pasta desta skill, venha ela do plugin `ml` do marketplace `labdaps` ou do `install.sh`. Se aparecer o nome da variável no lugar de um caminho, use `~/.claude/skills/ml-checkpoints/`, a pasta da instalação pelo `install.sh`. Aceita CSV, TSV, Parquet e Excel. Com `--json`, devolve o mesmo diagnóstico em formato de máquina.
 
 O que ele mede e por que cada coisa importa está em `references/checkpoints.md`. O essencial: N e colunas, tipo e prevalência do desfecho, missing por coluna, cardinalidade, sentinelas de saúde (9, 99, 999) distinguidas de código legítimo, colunas numéricas que na verdade são código, repetição por identificador, colunas de data e suspeita de vazamento por AUC univariada.
 

@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 # Instala todas as skills deste repositorio em ~/.claude/skills/
 #
+# É a alternativa ao marketplace de plugins labdaps (ver README). Quem instala
+# os plugins pelo marketplace não precisa deste script, e os dois juntos
+# carregam cada skill duas vezes.
+#
 # Copia o conteudo de cada skill, item a item, para dentro de $DEST/<nome>/.
 # Assim uma segunda execucao atualiza a instalacao em vez de aninhar a pasta
 # (cp -r pasta/ destino-existente cria destino/pasta no GNU cp). Ficam de
@@ -31,3 +35,4 @@ done
 echo ""
 echo "$count skills instaladas em $DEST"
 echo "Abra o Claude Code e acione com /<nome-da-skill> ou em linguagem natural."
+echo "Se você instalou os plugins do marketplace labdaps, não use também este script."

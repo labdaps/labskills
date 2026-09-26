@@ -24,13 +24,18 @@ jobs:
   plugin-validate:
     # Checagem oficial do Claude Code sobre o marketplace.json. Não precisa de
     # credencial. Complementa o teste em Python, que cobre as regras do lab.
+    # O --strict transforma aviso em erro: sem ele, um "skils" digitado errado
+    # passa com exit 0. Nem com ele o validate acusa caminho de skill que não
+    # existe; isso fica com o teste em Python. A versão fica fixa para uma
+    # mudança da CLI não quebrar o CI sem aviso; ao subir, confira também os
+    # campos aceitos em scripts/validate_marketplace.py.
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
-      - name: claude plugin validate
+      - name: claude plugin validate --strict
         env:
           DISABLE_AUTOUPDATER: "1"
-        run: npx --yes @anthropic-ai/claude-code plugin validate .
+        run: npx --yes @anthropic-ai/claude-code@2.1.283 plugin validate . --strict

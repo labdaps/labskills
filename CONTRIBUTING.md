@@ -54,7 +54,7 @@ Regras do `description`:
 
    O `--plugin-dir .` carrega as skills do seu branch como o plugin `labskills`, só nessa sessão. O `--settings` desliga, também só nessa sessão, os plugins do marketplace que você tenha instalado (um `false` por plugin do `marketplace.json`), que senão carregariam a versão publicada junto com a sua. Acione por `/labskills:minha-skill` e em linguagem natural para confirmar que ela dispara e funciona. Não copie para `~/.claude/skills/`: a cópia segue carregando depois do teste, ao lado do plugin. Se você já instalou pelo `install.sh`, a cópia antiga da skill também aparece, com o nome curto, e a versão em teste é a do prefixo `labskills:`.
 5. Adicione a skill na tabela do plugin dela no [README.md](README.md).
-6. Valide antes de subir: `python scripts/validate_skills.py` (checa frontmatter, nome da pasta, link no README, ausência de segredos e se a skill está em exatamente um plugin) e `python -m pytest tests skills/graph-lab/tests`. Com o Claude Code instalado, rode também `claude plugin validate .`. O CI roda essas checagens em cada PR.
+6. Valide antes de subir: `python scripts/validate_skills.py` (checa frontmatter, nome da pasta, link no README, ausência de segredos e se a skill está em exatamente um plugin) e `python -m pytest tests skills/graph-lab/tests`. Com o Claude Code instalado, rode também `claude plugin validate . --strict`. O CI roda essas checagens em cada PR.
 7. Commit e abra um Pull Request descrevendo o que a skill faz e em qual cenário do laboratório ela ajuda.
 
 ## Em qual plugin a skill entra

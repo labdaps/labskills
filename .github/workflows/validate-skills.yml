@@ -14,9 +14,23 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      - name: Validar estrutura e conteudo das skills
+      - name: Validar estrutura e conteudo das skills e o marketplace de plugins
         run: python scripts/validate_skills.py
-      - name: Testar o validador do grafo da graph-lab
+      - name: Testar o validador do marketplace e o validador do grafo da graph-lab
         run: |
           python -m pip install pytest
-          python -m pytest skills/graph-lab/tests -v
+          python -m pytest tests skills/graph-lab/tests -v
+
+  plugin-validate:
+    # Checagem oficial do Claude Code sobre o marketplace.json. Não precisa de
+    # credencial. Complementa o teste em Python, que cobre as regras do lab.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: claude plugin validate
+        env:
+          DISABLE_AUTOUPDATER: "1"
+        run: npx --yes @anthropic-ai/claude-code plugin validate .

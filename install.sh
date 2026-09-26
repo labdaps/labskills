@@ -1,16 +1,29 @@
 #!/usr/bin/env bash
 # Instala todas as skills deste repositorio em ~/.claude/skills/
+#
+# Copia o conteudo de cada skill, item a item, para dentro de $DEST/<nome>/.
+# Assim uma segunda execucao atualiza a instalacao em vez de aninhar a pasta
+# (cp -r pasta/ destino-existente cria destino/pasta no GNU cp). Ficam de
+# fora tests/ e __pycache__/: os testes dos scripts sao infraestrutura deste
+# repositorio, rodam no CI e nao servem a skill instalada.
 set -e
 
 DEST="${CLAUDE_SKILLS_DIR:-$HOME/.claude/skills}"
 SRC="$(cd "$(dirname "$0")/skills" && pwd)"
+EXCLUIR=" tests __pycache__ "
 
 mkdir -p "$DEST"
 
 count=0
 for dir in "$SRC"/*/; do
   name="$(basename "$dir")"
-  cp -r "$dir" "$DEST/$name"
+  mkdir -p "$DEST/$name"
+  for item in "$dir"*; do
+    case "$EXCLUIR" in
+      *" $(basename "$item") "*) continue ;;
+    esac
+    cp -R "$item" "$DEST/$name/"
+  done
   echo "instalada: $name"
   count=$((count + 1))
 done

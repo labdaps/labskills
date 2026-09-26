@@ -12,15 +12,15 @@ Uma skill é um conjunto de instruções em Markdown que o Claude Code carrega s
 
 | Skill | O que faz |
 |-------|-----------|
-| [datasus-outcome](skills/datasus-outcome/SKILL.md) | Adiciona um novo desfecho preditivo ao pipeline [datasus-ai-prediction](https://github.com/fabianofilho/datasus-ai-prediction): subclasse de `OutcomeConfig`, registro e checklist anti-leakage. |
+| [datasus-outcome](skills/datasus-outcome/SKILL.md) | Adiciona um novo desfecho preditivo ao app [lab-ai-prediction](https://github.com/fabianofilho/lab-ai-prediction): subclasse de `OutcomeConfig`, registro, metodologia, censura e checklist anti-leakage. |
 
 ### Ciência de dados e ML
 
 | Skill | O que faz |
 |-------|-----------|
-| [graph-lab](skills/graph-lab/SKILL.md) | Modela o experimento como grafo dirigido antes de rodar código, no formato de projeto de 7 fases do laboratório: cada etapa vira nó com métrica de sucesso, e efeitos colaterais entre métricas (imputação vs. calibração, seleção de features vs. interpretabilidade) são auditados antes da execução. |
+| [graph-lab](skills/graph-lab/SKILL.md) | Modela a tarefa como grafo dirigido antes de rodar código: cada etapa vira nó com métrica de sucesso, e efeitos colaterais entre métricas (imputação vs. calibração, seleção de features vs. interpretabilidade) são auditados antes da execução. Perfil geral para engenharia e perfil saúde/ML, obrigatório quando a tarefa treina modelo, com as 7 fases de projeto do laboratório, checklist anti-leakage e regra de dados. É a skill de grafo canônica do laboratório e substitui a graph-init. |
 | [ml-checkpoints](skills/ml-checkpoints/SKILL.md) | Conduz o pipeline por checkpoints interativos: diagnostica a base carregada (missing, sentinelas, cardinalidade, repetição de paciente, vazamento) e em cada etapa oferece só as estratégias que os dados permitem, da separação à interpretabilidade, registrando cada decisão com o motivo medido. |
-| [ml-pipeline](skills/ml-pipeline/SKILL.md) | Pipeline padrão de ML para projetos de saúde, alinhado às convenções do datasus-ai-prediction (train_cv, OOF probs, calibração, janelas temporais). |
+| [ml-pipeline](skills/ml-pipeline/SKILL.md) | Pipeline padrão de ML para projetos de saúde: executa as decisões registradas pela ml-checkpoints e segue a API do [lab-ai-prediction](https://github.com/fabianofilho/lab-ai-prediction) (separação antes do tuning, train_cv, OOF probs, calibração, janelas temporais). |
 | [ml-eval-report](skills/ml-eval-report/SKILL.md) | Relatório de avaliação reusando `core/models/evaluation.py`: ROC, PR, calibração, SHAP, métricas por subgrupo e comparação entre estados/períodos. |
 | [ml-timeseries](skills/ml-timeseries/SKILL.md) | Setup de modelos de séries temporais em saúde (skforecast, ARIMA, LSTM, Prophet). |
 
@@ -45,13 +45,15 @@ cd labskills
 ./install.sh
 ```
 
-O script copia as skills para `~/.claude/skills/`, deixando-as disponíveis em qualquer projeto do Claude Code.
+O script copia as skills para `~/.claude/skills/`, deixando-as disponíveis em qualquer projeto do Claude Code. Rodar de novo, depois de um `git pull`, atualiza os arquivos já instalados. A pasta `tests/` de uma skill fica de fora: ela guarda os testes dos scripts, que rodam no CI deste repositório e não servem à skill instalada.
 
 ### Instalar uma skill específica
 
 ```bash
 cp -r skills/peer-review ~/.claude/skills/
 ```
+
+Na cópia manual de uma skill com `tests/` (hoje, a `graph-lab`), apague essa pasta do destino.
 
 Depois é só acionar no Claude Code: `/peer-review` ou pedir em linguagem natural ("faz peer review do meu manuscrito", "revisa meu artigo como revisor de journal").
 

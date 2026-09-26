@@ -1,9 +1,14 @@
-# Task Graph: {{título-curto-do-experimento}}
+# Task Graph: {{título-curto-da-tarefa}}
 
 > Gerado pela skill `graph-lab`. Este arquivo é a fonte da verdade da rodada:
 > todo update de status acontece aqui, nunca só na conversa.
 
-## Identificação
+Perfil: {{geral ou saúde/ML}}
+
+<!-- saúde/ML é obrigatório quando algum nó treina, ajusta ou avalia modelo.
+     No perfil geral, apague as seções marcadas "só saúde/ML". -->
+
+## Identificação (só saúde/ML)
 
 | Campo | Valor |
 |---|---|
@@ -16,7 +21,7 @@
 
 ## Objetivo
 
-{{1 a 3 frases: o que o experimento entrega e quais métricas estão em tensão}}
+{{1 a 3 frases: o que a tarefa entrega e quais métricas estão em tensão}}
 
 ## Grafo
 
@@ -56,9 +61,9 @@ graph TD
 | N2 -.-> N5 | {{imputar altera a distribuição e desloca a probabilidade prevista}} | {{recalibrar e reportar Brier antes e depois}} |
 | N3 -.-> N6 | {{...}} | {{ação concreta OU "aceito pelo usuário em {{data}}"}} |
 
-## Checklist anti-leakage
+## Checklist anti-leakage (só saúde/ML)
 
-<!-- obrigatório antes de qualquer nó de modelagem -->
+<!-- obrigatório antes de qualquer nó de modelagem; a norma de cada item está na skill ml-checkpoints -->
 
 - [ ] desfecho e proxies do desfecho fora das preditoras
 - [ ] nenhuma variável registrada depois do momento da predição
@@ -66,7 +71,7 @@ graph TD
 - [ ] divisão respeita a unidade de dependência (paciente, hospital, período)
 - [ ] em série temporal, validação temporal e nenhuma janela futura no passado
 
-## Regra de dados
+## Regra de dados (só saúde/ML)
 
 - [ ] dado bruto fora do repositório, inclusive do privado
 - [ ] `.gitignore` cobre os diretórios de dado
@@ -87,5 +92,10 @@ graph TD
 
 ## Página do grafo
 
-- Caminho: `graphs/task-graph.html`
+<!-- ao fim de cada rodada: a estável e o snapshot da rodada, idênticos, e uma
+     linha nova no índice. Snapshot de rodada anterior nunca é editado. -->
+
+- Página estável: `graphs/task-graph.html`, sempre o mesmo caminho
 - URL publicada: {{preencher na primeira publicação e reutilizar sempre}}
+- Snapshot desta rodada: `graphs/{{INICIAIS}}-v{{N}}-{{AAAA-MM-DD}}.html`, cópia idêntica da estável
+- Índice das versões: `graphs/README.md` (versão, data, arquivo, o que mudou)

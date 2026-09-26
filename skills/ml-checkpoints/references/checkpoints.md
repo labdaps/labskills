@@ -67,6 +67,8 @@ Decida coluna a coluna, por faixa de missing:
 
 **A pergunta que decide:** o missing é diferente entre os grupos de desfecho, ou entre subgrupos como sexo, raça/cor e região. Se for, ele carrega informação, o indicador deixa de ser opcional e a exclusão de linhas passa a ser uma decisão sobre quem sai do estudo.
 
+**Sentinela é por variável, nunca global.** O código de ignorado depende do campo (no SINASC, 9 em escolaridade da mãe e em consultas de pré-natal, 0 em sexo), e o mesmo número é valor legítimo em outra coluna (9 em idade ou em Apgar). Troque por ausente coluna a coluna, a partir do dicionário da base, antes da codificação e da imputação. Substituir a mesma lista de valores no dado inteiro apaga a idade de 9 anos e um nível arbitrário de cada categórica já codificada.
+
 ## CP4: pré-processamento
 
 Primeiro, **confirme quais numéricas são código**. Depois:
@@ -79,6 +81,8 @@ Primeiro, **confirme quais numéricas são código**. Depois:
 | escalonamento | condicional à família do CP6 | irrelevante para árvore, obrigatório para linear, SVM e KNN |
 | tratamento de outlier | valor implausível clinicamente | cortar cauda pode remover justamente o caso grave que se quer prever |
 
+**Encoding fixo.** O código de cada categoria vem de um mapa declarado, tirado do dicionário da base, e não da ordem das categorias presentes na amostra. `pd.Categorical(col).codes` numera o que aparece: o mesmo valor ganha código diferente em outro recorte, UF ou ano, e, conforme a versão do pandas, o ausente vira uma categoria a mais ou o número -1. Mantenha a categórica como categoria até o pipeline e ajuste o encoder dentro do fold, serializado junto com o modelo.
+
 Outlier em saúde merece cuidado: pressão de 300 pode ser erro de digitação ou o paciente que vai morrer. A decisão é clínica, não estatística.
 
 ## CP5: desbalanceamento
@@ -86,12 +90,12 @@ Outlier em saúde merece cuidado: pressão de 300 pode ser erro de digitação o
 | Opção | VIÁVEL quando | Custo |
 |---|---|---|
 | não balancear, ajustar o corte | sempre, e é o padrão em modelo de risco | exige explicar que acurácia alta não significa nada aqui |
-| class_weight balanceado | razão acima de 20 para 1 | mexe na probabilidade, menos que reamostrar |
+| class_weight balanceado | razão acima de 20 para 1 | mexe na probabilidade, menos que reamostrar, e só entra com a calibração medida antes e depois (CP9) |
 | SMOTE ou reamostragem | raramente | prevalência artificial desloca toda a probabilidade prevista, e obriga recalibrar |
 
 Desbalanceamento não é um problema a corrigir por reflexo. Desfecho raro é raro no mundo, e a probabilidade prevista precisa refletir isso. Quem usa o modelo na ponta lê "risco de 8%", não "classe positiva".
 
-Se houver reamostragem, ela acontece **dentro do fold de treino**, nunca antes do split, e o CP9 deixa de ser opcional.
+Com class_weight ou reamostragem, o CP9 deixa de ser opcional. A reamostragem acontece **dentro do fold de treino**, nunca antes do split.
 
 ## CP6: modelos candidatos
 

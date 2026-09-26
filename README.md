@@ -99,7 +99,33 @@ Detalhes que costumam pegar:
 
 - Se o projeto já tem `.claude/settings.json`, acrescente as duas chaves às que ele já tem. O comando `claude plugin marketplace add labdaps/labskills --scope project`, rodado na raiz do projeto, grava a parte do marketplace.
 - O Claude Code só registra o marketplace depois que a pessoa aceita o diálogo de confiança da pasta. Antes disso, a chave é ignorada sem aviso.
-- Sessão na nuvem (Claude Code na web) não instala os plugins declarados no `.claude/settings.json` do repositório. Nela valem as skills ativadas na conta do claude.ai ou uma cópia versionada no próprio projeto, feita com `CLAUDE_SKILLS_DIR=<projeto>/.claude/skills ./install.sh` e refeita a cada atualização.
+- Sessão na nuvem (Claude Code na web) não instala os plugins declarados no `.claude/settings.json` do repositório. Veja abaixo como escolher.
+
+#### Projeto aberto na nuvem: plugins ou cópia versionada
+
+Na nuvem valem só as skills ativadas na conta do claude.ai e as que o projeto versiona em `.claude/skills/`. Cada projeto escolhe um dos dois caminhos, nunca os dois: fora da nuvem, a cópia e os plugins carregam juntos, e cada skill aparece duas vezes (`/graph-lab` e `/grafo:graph-lab`).
+
+- **Todos trabalham no projeto só na máquina local:** fique com os plugins, pelo trecho acima. Eles se atualizam sozinhos.
+- **Alguém abre o projeto no Claude Code na web:** fique com a cópia versionada, que também vale na máquina local. Copie só as skills dos plugins que o projeto habilitaria, para não levar a datasus-outcome a projeto que não é o app. Na raiz do clone do labskills:
+
+  ```bash
+  CLAUDE_SKILLS_DIR=<projeto>/.claude/skills ./install.sh --plugin grafo --plugin ml --plugin paper
+  ```
+
+  No `.claude/settings.json` do projeto, use este trecho no lugar do anterior. Ele desliga, só nesse projeto, os plugins labdaps de quem os instalou na própria conta, que senão carregariam junto com a cópia:
+
+  ```json
+  {
+    "enabledPlugins": {
+      "grafo@labdaps": false,
+      "ml@labdaps": false,
+      "paper@labdaps": false,
+      "datasus@labdaps": false
+    }
+  }
+  ```
+
+  A cópia não se atualiza sozinha: rode o mesmo comando depois de cada `git pull` do labskills e versione o resultado. O script não apaga nada, então skill ou arquivo que saiu do labskills precisa ser apagado à mão.
 
 ### Por cópia, com o `install.sh` (alternativa)
 
@@ -119,7 +145,7 @@ O script copia as skills para `~/.claude/skills/`, deixando-as disponíveis em q
 cp -r skills/peer-review ~/.claude/skills/
 ```
 
-Na cópia manual de uma skill com `tests/` (hoje, a `graph-lab`), apague essa pasta do destino.
+Na cópia manual de uma skill com `tests/` (hoje, a `graph-lab`), apague essa pasta do destino. Para copiar só as skills de um plugin, com a mesma exclusão de `tests/`, use `./install.sh --plugin ml` (repetível, um `--plugin` por plugin).
 
 Depois é só acionar no Claude Code: `/peer-review` ou pedir em linguagem natural ("faz peer review do meu manuscrito", "revisa meu artigo como revisor de journal").
 

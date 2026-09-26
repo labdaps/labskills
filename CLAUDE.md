@@ -14,8 +14,8 @@ skills/<nome>/SKILL.md           # cada skill, com cabeçalho YAML name + descri
 skills/<nome>/references/        # material de apoio opcional da skill
 scripts/validate_skills.py       # valida skills e marketplace; roda no CI
 scripts/validate_marketplace.py  # regras do marketplace, chamadas pelo validate_skills.py
-tests/                           # testes do validador do marketplace
-install.sh                       # alternativa ao marketplace: copia as skills para ~/.claude/skills/
+tests/                           # testes do validador do marketplace e do install.sh
+install.sh                       # alternativa ao marketplace: copia as skills, ou só as de um plugin (--plugin), para ~/.claude/skills/
 CONTRIBUTING.md                  # guia para adicionar skills
 ```
 

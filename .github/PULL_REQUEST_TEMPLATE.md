@@ -7,7 +7,8 @@ Descreva em uma ou duas frases o que a skill resolve e em qual cenário do LABDA
 - [ ] A skill está em `skills/<nome>/SKILL.md`
 - [ ] O campo `name` no frontmatter é igual ao nome da pasta
 - [ ] O `description` lista os gatilhos reais (comando `/` e frases em linguagem natural)
-- [ ] Adicionei a skill na tabela do `README.md`
+- [ ] Acrescentei `./skills/<nome>` a exatamente um plugin em `.claude-plugin/marketplace.json`
+- [ ] Adicionei a skill na tabela do plugin dela no `README.md`
 - [ ] Testei localmente (copiei para `~/.claude/skills/` e acionei no Claude Code)
 - [ ] Sem dados pessoais ou segredos (tokens, e-mails, IPs, caminhos absolutos, credenciais)
 - [ ] Uma skill, um propósito

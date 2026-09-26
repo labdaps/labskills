@@ -7,8 +7,12 @@ ou, sem pytest:
 
 TestRepositorio roda o validador sobre este repositório. TestCasosQuebrados monta um
 marketplace mínimo numa pasta temporária, quebra uma regra por teste e confere
-que o validador acusa exatamente aquela quebra, para provar que cada checagem
-morde e não só que o repositório atual passa.
+que o validador acusa aquela quebra, para provar que cada checagem morde e não
+só que o repositório atual passa. Dois testes de lá são casos válidos: a base
+(test_base_valida) e o plugin renomeado com renames.
+
+Toda checagem do validate_marketplace.py tem aqui um teste que falha quando ela
+é desligada. Ao acrescentar uma checagem, acrescente o teste que a quebra.
 """
 import copy
 import importlib.util
@@ -206,6 +210,101 @@ class TestCasosQuebrados(unittest.TestCase):
     def test_readme_com_repo_errado(self):
         (self.tmp / "README.md").write_text(README_BASE.replace('"repo": "org/repo"', '"repo": "org/outro"'), encoding="utf-8")
         self.assertUmErro(self.validar(), "extraKnownMarketplaces precisa declarar")
+
+    def test_marketplace_nao_e_objeto(self):
+        (self.tmp / ".claude-plugin" / "marketplace.json").write_text("[]", encoding="utf-8")
+        erros = vm.validar(self.tmp, marketplace="mkt", repo="org/repo", publicados=())
+        self.assertUmErro(erros, "precisa ser um objeto JSON")
+
+    def test_campo_desconhecido_no_topo(self):
+        self.dados["descripton"] = "digitado errado"
+        self.assertUmErro(self.validar(), "campo desconhecido no topo: 'descripton'")
+
+    def test_sem_description_do_marketplace(self):
+        del self.dados["description"]
+        self.assertUmErro(self.validar(), "falta description do marketplace")
+
+    def test_sem_plugins(self):
+        self.dados["plugins"] = []
+        self.assertUmErro(self.validar(publicados=()), "plugins precisa ser uma lista não vazia")
+
+    def test_entrada_que_nao_e_objeto(self):
+        self.dados["plugins"].append("tres")
+        self.assertUmErro(self.validar(), "plugins[2] não é um objeto")
+
+    def test_plugin_sem_description(self):
+        del self.dados["plugins"][0]["description"]
+        self.assertUmErro(self.validar(), "plugin 'um': falta description")
+
+    def test_skills_vazia(self):
+        self.dados["plugins"][1]["skills"] = []
+        erros = self.validar()
+        self.assertTrue(any("skills precisa ser uma lista não vazia" in e for e in erros), erros)
+
+    def test_caminho_de_skill_que_nao_e_texto(self):
+        self.dados["plugins"][1]["skills"].append(3)
+        self.assertUmErro(self.validar(), "caminho de skill não é texto")
+
+    def test_caminho_em_outra_pasta(self):
+        (self.tmp / "outra" / "beta").mkdir(parents=True)
+        (self.tmp / "outra" / "beta" / "SKILL.md").write_text("---\nname: beta\n---\n", encoding="utf-8")
+        self.dados["plugins"][1]["skills"] = ["./outra/beta"]
+        erros = self.validar()
+        self.assertTrue(any("forma ./skills/<nome>" in e for e in erros), erros)
+
+    def test_renames_que_nao_e_objeto(self):
+        self.dados["renames"] = ["dois"]
+        self.assertUmErro(self.validar(), "renames precisa ser um objeto")
+
+    def test_cada_componente_padrao_na_raiz(self):
+        # Lista escrita à mão de propósito: tirar um item de COMPONENTES_NA_RAIZ
+        # tem de quebrar este teste.
+        componentes = (
+            ".claude-plugin/plugin.json", "commands", "agents", "hooks", "output-styles",
+            "workflows", "themes", "monitors", "bin", ".mcp.json", ".lsp.json",
+            "settings.json", "SKILL.md",
+        )
+        for relativo in componentes:
+            with self.subTest(componente=relativo):
+                caminho = self.tmp / relativo
+                if "." in caminho.name:
+                    caminho.write_text("{}", encoding="utf-8")
+                else:
+                    caminho.mkdir()
+                try:
+                    self.assertUmErro(self.validar(), f"{relativo} na raiz")
+                finally:
+                    if caminho.is_dir():
+                        caminho.rmdir()
+                    else:
+                        caminho.unlink()
+
+    def test_sem_readme(self):
+        (self.tmp / "README.md").unlink()
+        self.assertUmErro(self.validar(), "falta README.md")
+
+    def test_readme_sem_marketplace_add(self):
+        (self.tmp / "README.md").write_text(README_BASE.replace("/plugin marketplace add org/repo\n", ""), encoding="utf-8")
+        self.assertUmErro(self.validar(), "'/plugin marketplace add org/repo'")
+
+    def test_readme_com_trecho_de_json_invalido(self):
+        (self.tmp / "README.md").write_text(README_BASE.replace('"um@mkt": true}', '"um@mkt": true,}'), encoding="utf-8")
+        self.assertUmErro(self.validar(), "trecho de settings.json com JSON inválido")
+
+    def test_readme_com_trecho_que_nao_e_objeto(self):
+        readme = README_BASE + '\n```json\n["extraKnownMarketplaces"]\n```\n'
+        (self.tmp / "README.md").write_text(readme, encoding="utf-8")
+        self.assertUmErro(self.validar(), "precisa ser um objeto JSON")
+
+    def test_readme_sem_enabled_plugins(self):
+        readme = README_BASE.replace(',\n  "enabledPlugins": {"um@mkt": true}', "")
+        self.assertNotEqual(readme, README_BASE)
+        (self.tmp / "README.md").write_text(readme, encoding="utf-8")
+        self.assertUmErro(self.validar(), "não tem enabledPlugins")
+
+    def test_readme_habilita_com_valor_que_nao_e_booleano(self):
+        (self.tmp / "README.md").write_text(README_BASE.replace('"um@mkt": true', '"um@mkt": "true"'), encoding="utf-8")
+        self.assertUmErro(self.validar(), "precisa ser true ou false")
 
     def test_readme_com_formato_antigo_de_lista(self):
         # Formato que circula em resumo não oficial e que o Claude Code não lê:

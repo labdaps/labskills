@@ -260,8 +260,8 @@ def validar(
             erros.append(f"skill '{skill}' não está em nenhum plugin do marketplace")
         elif len(donos) > 1:
             erros.append(f"skill '{skill}' está em mais de um plugin: {', '.join(donos)}")
-    for skill in sorted(set(dono_da_skill) - set(pastas)):
-        erros.append(f"skill '{skill}' citada no marketplace não existe em skills/")
+    # Skill citada no marketplace sem pasta em skills/ já foi acusada em
+    # _checar_entrada ("não existe ou não tem SKILL.md") e não chega a dono_da_skill.
 
     for relativo in COMPONENTES_NA_RAIZ:
         if (root / relativo).exists():

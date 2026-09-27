@@ -1,0 +1,74 @@
+{
+  "name": "labdaps",
+  "description": "Skills do Claude Code do LABDAPS (FSP-USP), agrupadas em plugins por domínio: grafo, ml, paper e datasus.",
+  "owner": {
+    "name": "LABDAPS",
+    "url": "https://github.com/labdaps"
+  },
+  "plugins": [
+    {
+      "name": "grafo",
+      "description": "Skill de grafo canônica do laboratório (graph-lab): modela a tarefa como grafo dirigido antes de executar, com validador de ciclos testado e perfil saúde/ML com checklist anti-vazamento.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/graph-lab"
+      ],
+      "author": {
+        "name": "LABDAPS"
+      },
+      "repository": "https://github.com/labdaps/labskills",
+      "license": "MIT"
+    },
+    {
+      "name": "ml",
+      "description": "Modelagem preditiva em saúde: ml-checkpoints, a norma de método do laboratório, e as skills que a executam e reportam (ml-pipeline, ml-eval-report, ml-timeseries).",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/ml-checkpoints",
+        "./skills/ml-pipeline",
+        "./skills/ml-eval-report",
+        "./skills/ml-timeseries"
+      ],
+      "author": {
+        "name": "LABDAPS"
+      },
+      "repository": "https://github.com/labdaps/labskills",
+      "license": "MIT"
+    },
+    {
+      "name": "paper",
+      "description": "Pesquisa e escrita científica: busca de literatura, leitura crítica, estrutura e redação de artigo com reporting guidelines, revisão por pares simulada e atualização de resultados em LaTeX.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/paper-review",
+        "./skills/peer-review",
+        "./skills/paper-scaffold",
+        "./skills/artigo",
+        "./skills/radar-academico",
+        "./skills/update-paper"
+      ],
+      "author": {
+        "name": "LABDAPS"
+      },
+      "repository": "https://github.com/labdaps/labskills",
+      "license": "MIT"
+    },
+    {
+      "name": "datasus",
+      "description": "Domínio DataSUS: datasus-outcome, que adiciona um desfecho preditivo ao app lab-ai-prediction seguindo o padrão dos desfechos existentes.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/datasus-outcome"
+      ],
+      "author": {
+        "name": "LABDAPS"
+      },
+      "repository": "https://github.com/labdaps/labskills",
+      "license": "MIT"
+    }
+  ]
+}

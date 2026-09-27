@@ -8,6 +8,9 @@ Checa, para cada skills/<nome>/SKILL.md:
 - nao ha segredos obvios (tokens, e-mails, IPs, caminhos pessoais)
 - a skill esta linkada no README.md
 
+E, pelo validate_marketplace.py, que cada skill está em exatamente um plugin do
+marketplace .claude-plugin/marketplace.json (ver a docstring daquele script).
+
 Sem dependencias externas: so stdlib.
 Sai com codigo 1 se houver qualquer erro.
 """
@@ -16,6 +19,8 @@ from __future__ import annotations
 import re
 import sys
 from pathlib import Path
+
+from validate_marketplace import validar as validar_marketplace
 
 ROOT = Path(__file__).resolve().parent.parent
 SKILLS_DIR = ROOT / "skills"
@@ -105,13 +110,15 @@ def main() -> int:
                     rel = f.relative_to(ROOT)
                     errors.append(f"{name}: possivel {label} em {rel}: '{hit.group(0)}'")
 
+    errors.extend(f"marketplace: {e}" for e in validar_marketplace(ROOT))
+
     if errors:
         print(f"FALHOU com {len(errors)} problema(s):\n")
         for e in errors:
             print(f"  - {e}")
         return 1
 
-    print(f"OK: {len(skill_dirs)} skills validadas, sem problemas.")
+    print(f"OK: {len(skill_dirs)} skills validadas, sem problemas, cada uma em um plugin do marketplace.")
     for d in skill_dirs:
         print(f"  - {d.name}")
     return 0

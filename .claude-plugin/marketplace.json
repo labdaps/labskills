@@ -22,14 +22,17 @@
     },
     {
       "name": "ml",
-      "description": "Modelagem preditiva em saúde: ml-checkpoints, a norma de método do laboratório, e as skills que a executam e reportam (ml-pipeline, ml-eval-report, ml-timeseries).",
+      "description": "Modelagem preditiva em saúde: ml-checkpoints, a norma de método do laboratório, as skills que a executam e reportam (ml-pipeline, ml-eval-report, ml-timeseries), o experimento clínico de ponta a ponta (lab-exp), o cálculo de amostra (ic) e a especificação legível do pipeline (spec).",
       "source": "./",
       "strict": false,
       "skills": [
         "./skills/ml-checkpoints",
         "./skills/ml-pipeline",
         "./skills/ml-eval-report",
-        "./skills/ml-timeseries"
+        "./skills/ml-timeseries",
+        "./skills/lab-exp",
+        "./skills/ic",
+        "./skills/spec"
       ],
       "author": {
         "name": "LABDAPS"
@@ -39,7 +42,7 @@
     },
     {
       "name": "paper",
-      "description": "Pesquisa e escrita científica: busca de literatura, leitura crítica, estrutura e redação de artigo com reporting guidelines, revisão por pares simulada e atualização de resultados em LaTeX.",
+      "description": "Pesquisa e escrita científica: busca de literatura (radar-academico, papers), leitura e triagem (paper-review, abstract), estrutura e redação com reporting guidelines (paper-scaffold, artigo, paper), autoria CRediT, escolha de periódico, revisão em vermelho e por pares simulada, figuras (paper-png, desenho-metodologico, infografico), exportação LaTeX e atualização de resultados.",
       "source": "./",
       "strict": false,
       "skills": [
@@ -48,7 +51,17 @@
         "./skills/paper-scaffold",
         "./skills/artigo",
         "./skills/radar-academico",
-        "./skills/update-paper"
+        "./skills/update-paper",
+        "./skills/paper",
+        "./skills/author-credit",
+        "./skills/journal",
+        "./skills/red",
+        "./skills/latex",
+        "./skills/desenho-metodologico",
+        "./skills/paper-png",
+        "./skills/infografico",
+        "./skills/abstract",
+        "./skills/papers"
       ],
       "author": {
         "name": "LABDAPS"

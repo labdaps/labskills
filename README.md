@@ -31,6 +31,9 @@ As skills são distribuídas como plugins do Claude Code. Cada plugin agrupa as 
 | [ml-pipeline](skills/ml-pipeline/SKILL.md) | Pipeline padrão de ML para projetos de saúde: executa as decisões registradas pela ml-checkpoints e segue a API do [lab-ai-prediction](https://github.com/fabianofilho/lab-ai-prediction) (separação antes do tuning, train_cv, OOF probs, calibração, janelas temporais). |
 | [ml-eval-report](skills/ml-eval-report/SKILL.md) | Relatório de avaliação reusando `core/models/evaluation.py`: ROC, PR, calibração, SHAP, métricas por subgrupo e comparação entre estados/períodos. |
 | [ml-timeseries](skills/ml-timeseries/SKILL.md) | Setup de modelos de séries temporais em saúde (skforecast, ARIMA, LSTM, Prophet). |
+| [lab-exp](skills/lab-exp/SKILL.md) | Roda um experimento preditivo clínico de ponta a ponta no padrão do laboratório: auditoria de vazamento que decide se o experimento faz sentido, Boruta dentro do fold, sete modelos com regra de desempate declarada antes, limiar fora da amostra, IC por bootstrap e calibração, com notebook executado, relatório HTML e pacote de entrega. |
+| [ic](skills/ic/SKILL.md) | Calcula o tamanho de amostra para estimar uma proporção (taxa de erro, prevalência, adesão) com intervalo de confiança, em Q&A curto e com a conta feita à mão na resposta, sem código. |
+| [spec](skills/spec/SKILL.md) | Documenta um pipeline como especificação legível por quem não escreveu o código, extraída do próprio código e do log da execução: cada regra, por que existe, o que quebra sem ela, o que foi testado e o que não se pode concluir; entrega como artifact, .docx ou `DOCUMENTACAO.md`. |
 
 ### Plugin `paper`
 
@@ -42,6 +45,16 @@ As skills são distribuídas como plugins do Claude Code. Cada plugin agrupa as 
 | [artigo](skills/artigo/SKILL.md) | Pipeline em 7 fases de escrita de artigo em IA médica com reporting guidelines (TRIPOD+AI, STROBE, PRISMA, CONSORT, STARD). |
 | [radar-academico](skills/radar-academico/SKILL.md) | Busca semanal de papers por tema, filtra, baixa PDFs e resume. |
 | [update-paper](skills/update-paper/SKILL.md) | Atualiza seções de resultados em LaTeX quando análises ou métricas mudam. |
+| [paper](skills/paper/SKILL.md) | Escreve, monta e audita manuscritos de IA em saúde contra os checklists de reporte guardados em `references/` (TRIPOD+AI, PROBAST+AI, TRIPOD-LLM, STARD-AI, CLAIM, DECIDE-AI, CONSORT-AI, SPIRIT-AI, PRISMA 2020, AMSTAR 2) e gera o .docx de submissão por script (página de rosto, linhas numeradas, Vancouver). Sub-comandos `draft`, `full`, `check`, `abstract`, `cover` e `rebuttal`. |
+| [abstract](skills/abstract/SKILL.md) | Extrai um paper em 5 tópicos fixos (problema, métodos, resultados, limitações, relevância) em prosa densa, para triagem rápida de literatura. |
+| [papers](skills/papers/SKILL.md) | Varre arXiv, PubMed e medRxiv por tópico nos últimos N dias com um script só de biblioteca padrão, filtra por metodologia de IA em saúde, deduplica por DOI e entrega a lista com abstract e link. |
+| [journal](skills/journal/SKILL.md) | Seleciona o periódico alvo cruzando encaixe de escopo, impacto e custo real (APC, indexação, sinal de predatória), com cada dado conferido na página do editor; `check`, `fit`, `free` e `compare A vs B`. |
+| [author-credit](skills/author-credit/SKILL.md) | Monta a declaração CRediT de contribuição dos autores levantando no repositório quem fez o quê, pergunta só o que a evidência não resolve e aplica em .tex, .docx e markdown de uma vez; `check` audita contra os critérios de autoria do ICMJE. |
+| [red](skills/red/SKILL.md) | Revisa criticamente um documento (protocolo, proposta, projeto, texto institucional) e devolve o mesmo .docx com as sugestões inseridas em vermelho no ponto exato de cada seção, preservando estilos e numeração. |
+| [latex](skills/latex/SKILL.md) | Exporta um paper LaTeX multi-arquivo para um pacote que compila fora da pasta original (achata `\input`, embute o `.bib`, resolve figuras) e prova compilando num diretório limpo; variantes `paste`, `figures`, `zip` e `arxiv`. |
+| [paper-png](skills/paper-png/SKILL.md) | Figuras científicas em PNG 300 dpi com fundo transparente, no estilo editorial de journals (paleta neutra, serifa, sem gradiente), a partir de PDF, URL ou DOI; guias de layout para fluxograma, arquitetura e resultados. |
+| [desenho-metodologico](skills/desenho-metodologico/SKILL.md) | Figura de desenho metodológico (graphical abstract, study design) em SVG vetorial com exportação para PNG 300 dpi e PDF pelo Chrome headless; cada número vem do manuscrito e vira constante rastreável no gerador. |
+| [infografico](skills/infografico/SKILL.md) | Infográficos e diagramas de metodologia no estilo visual dos papers do laboratório (paleta pastel, caixas arredondadas, badges numerados) e imagem TOC/graphical abstract sem texto para submissão. |
 
 ### Plugin `datasus`
 

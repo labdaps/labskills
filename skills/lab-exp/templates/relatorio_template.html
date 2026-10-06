@@ -1,0 +1,383 @@
+<title>NOME DO EXPERIMENTO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --ground:#eef2f1; --surface:#ffffff; --surface-2:#e4ebe9;
+  --ink:#0f1d1c; --ink-2:#334744; --muted:#5f716f;
+  --line:#cbd8d5; --line-strong:#9fb3af;
+  --accent:#14655d; --accent-soft:#d5e6e3;
+  --alert:#9e3227; --alert-soft:#f2ded9;
+  --tint:20,101,93;
+  --shadow:0 1px 2px rgba(15,29,28,.06);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#0c1413; --surface:#131e1d; --surface-2:#1a2726;
+    --ink:#dfe8e5; --ink-2:#b3c4c1; --muted:#8aa09d;
+    --line:#27403d; --line-strong:#3d5b57;
+    --accent:#49a89b; --accent-soft:#17332f;
+    --alert:#d97a6c; --alert-soft:#33201d;
+    --tint:73,168,155;
+    --shadow:0 1px 2px rgba(0,0,0,.4);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0c1413; --surface:#131e1d; --surface-2:#1a2726;
+  --ink:#dfe8e5; --ink-2:#b3c4c1; --muted:#8aa09d;
+  --line:#27403d; --line-strong:#3d5b57;
+  --accent:#49a89b; --accent-soft:#17332f;
+  --alert:#d97a6c; --alert-soft:#33201d;
+  --tint:73,168,155;
+  --shadow:0 1px 2px rgba(0,0,0,.4);
+}
+
+*{box-sizing:border-box}
+body{
+  background:var(--ground); color:var(--ink);
+  font-family:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:16.5px; line-height:1.65; margin:0;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{
+  display:grid; grid-template-columns:
+    [full-start] minmax(1.25rem,1fr)
+    [wide-start] minmax(0,240px)
+    [text-start] minmax(0,64ch) [text-end]
+    minmax(0,240px) [wide-end]
+    minmax(1.25rem,1fr) [full-end];
+  row-gap:0;
+}
+.wrap > *{grid-column:text}
+.wide{grid-column:wide}
+.full{grid-column:full}
+
+h1,h2,h3{font-family:Spectral,Georgia,serif; font-weight:600; text-wrap:balance; margin:0}
+h1{font-size:clamp(2.1rem,4.6vw,3.1rem); line-height:1.08; letter-spacing:-.015em}
+h2{font-size:1.72rem; line-height:1.2; margin:0 0 .2rem}
+h3{font-size:1.12rem; line-height:1.3; margin:0 0 .35rem}
+p{margin:0 0 1.05rem}
+a{color:var(--accent)}
+strong{font-weight:600}
+code,.mono{font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:.87em}
+code{background:var(--surface-2); padding:.1em .32em; border-radius:3px}
+
+/* ---------- cabecalho ---------- */
+header{padding:clamp(3rem,7vw,5.5rem) 0 2.2rem}
+.eyebrow{
+  font-family:"IBM Plex Mono",monospace; font-size:.74rem; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--accent); margin:0 0 1.1rem
+}
+.standfirst{
+  font-family:Spectral,Georgia,serif; font-size:1.22rem; line-height:1.55;
+  color:var(--ink-2); margin:1.3rem 0 0; max-width:56ch
+}
+.meta{
+  display:flex; flex-wrap:wrap; gap:0 2.4rem; margin:2.2rem 0 0;
+  padding-top:1.2rem; border-top:1px solid var(--line);
+  font-size:.86rem; color:var(--muted)
+}
+.meta div{display:flex; flex-direction:column; gap:.1rem}
+.meta b{
+  font-family:"IBM Plex Mono",monospace; font-weight:500; font-size:1.15rem;
+  color:var(--ink); font-variant-numeric:tabular-nums
+}
+
+/* ---------- secoes ---------- */
+section{padding:2.6rem 0 .4rem}
+.sec-head{display:flex; align-items:baseline; gap:.85rem; margin:0 0 1.1rem}
+.sec-num{
+  font-family:"IBM Plex Mono",monospace; font-size:.8rem; color:var(--muted);
+  border:1px solid var(--line-strong); border-radius:2px; padding:.05rem .4rem;
+  flex:none; position:relative; top:-.22rem
+}
+.lede{color:var(--ink-2)}
+
+/* ---------- destaque do achado ---------- */
+.achado{
+  background:var(--alert-soft); border-left:3px solid var(--alert);
+  padding:1.3rem 1.5rem; margin:0 0 1.4rem
+}
+.achado p:last-child{margin-bottom:0}
+.achado .grande{
+  font-family:Spectral,Georgia,serif; font-size:2.5rem; line-height:1;
+  color:var(--alert); font-variant-numeric:tabular-nums; display:block; margin-bottom:.3rem
+}
+
+/* ---------- tabelas ---------- */
+.tabela{overflow-x:auto; margin:0 0 .6rem}
+table{border-collapse:collapse; width:100%; font-size:.9rem}
+caption{
+  caption-side:top; text-align:left; color:var(--muted); font-size:.82rem;
+  padding:0 0 .55rem
+}
+th,td{
+  padding:.44rem .7rem; text-align:right; border-bottom:1px solid var(--line);
+  font-variant-numeric:tabular-nums; white-space:nowrap
+}
+th:first-child,td:first-child{text-align:left; white-space:normal}
+thead th{
+  font-size:.74rem; letter-spacing:.07em; text-transform:uppercase; color:var(--muted);
+  font-weight:500; border-bottom:1px solid var(--line-strong)
+}
+tbody tr:last-child td{border-bottom:none}
+tr.destaque td{background:var(--accent-soft)}
+tr.destaque td:first-child{font-weight:600}
+td.num{font-family:"IBM Plex Mono",monospace}
+.t1{background:rgba(var(--tint),.07)} .t2{background:rgba(var(--tint),.15)}
+.t3{background:rgba(var(--tint),.24)} .t4{background:rgba(var(--tint),.34)}
+.t5{background:rgba(var(--tint),.46)} .t6{background:rgba(var(--tint),.6)}
+.legenda{font-size:.82rem; color:var(--muted); margin:.1rem 0 1.4rem}
+
+/* ---------- fluxograma da coorte ---------- */
+.fluxo{
+  font-family:"IBM Plex Mono",monospace; font-size:.86rem; line-height:2;
+  border-top:1px solid var(--line); margin:.4rem 0 1.3rem
+}
+.fluxo div{
+  display:flex; justify-content:space-between; gap:1rem; align-items:baseline;
+  border-bottom:1px solid var(--line); padding:.15rem 0
+}
+.fluxo .saiu{color:var(--alert); padding-left:1.4rem}
+.fluxo .fica{font-weight:500}
+.fluxo b{font-variant-numeric:tabular-nums}
+
+/* ---------- fases do pipeline ---------- */
+.fases{display:flex; flex-direction:column; gap:0; margin:.5rem 0 1.4rem}
+.fase{
+  display:grid; grid-template-columns:2.4rem 1fr; gap:0 1rem;
+  padding:1rem 0; border-top:1px solid var(--line)
+}
+.fase:last-child{border-bottom:1px solid var(--line)}
+.fase .n{
+  font-family:"IBM Plex Mono",monospace; font-size:.95rem; color:var(--accent);
+  font-weight:500
+}
+.fase p{margin:.25rem 0 0; font-size:.94rem; color:var(--ink-2)}
+.fase .porque{
+  margin-top:.5rem; font-size:.88rem; color:var(--muted);
+  border-left:2px solid var(--line-strong); padding-left:.75rem
+}
+
+/* ---------- figuras ---------- */
+figure{margin:1.6rem 0 1.9rem; background:var(--surface); padding:1rem;
+  border:1px solid var(--line); box-shadow:var(--shadow)}
+figure img{width:100%; height:auto; display:block}
+figcaption{
+  font-size:.85rem; color:var(--muted); margin-top:.85rem; line-height:1.5;
+  padding-top:.7rem; border-top:1px solid var(--line)
+}
+figcaption b{color:var(--ink-2); font-weight:500}
+
+/* ---------- lista de ressalvas ---------- */
+ol.ressalvas{margin:0 0 1.2rem; padding-left:0; list-style:none; counter-reset:r}
+ol.ressalvas li{
+  counter-increment:r; padding:.85rem 0 .85rem 2.3rem; position:relative;
+  border-bottom:1px solid var(--line); font-size:.95rem
+}
+ol.ressalvas li::before{
+  content:counter(r); position:absolute; left:0; top:.85rem;
+  font-family:"IBM Plex Mono",monospace; font-size:.8rem; color:var(--muted)
+}
+ol.ressalvas li:first-child{border-top:1px solid var(--line)}
+
+/* ---------- arquivos ---------- */
+.arquivos{
+  font-family:"IBM Plex Mono",monospace; font-size:.83rem; line-height:1.9;
+  background:var(--surface); border:1px solid var(--line); padding:1rem 1.2rem;
+  overflow-x:auto
+}
+.arquivos span{color:var(--muted)}
+
+footer{
+  margin-top:3rem; padding:1.5rem 0 4rem; border-top:1px solid var(--line);
+  font-size:.84rem; color:var(--muted)
+}
+hr.fina{border:none; border-top:1px solid var(--line); margin:2.4rem 0 0}
+
+/* ---------- acoes de saida ---------- */
+.acoes{
+  display:flex; flex-wrap:wrap; align-items:center; gap:.6rem;
+  margin:1.6rem 0 0
+}
+.acoes button{
+  font-family:"IBM Plex Sans",sans-serif; font-size:.85rem; color:var(--ink);
+  background:var(--surface); border:1px solid var(--line-strong); border-radius:2px;
+  padding:.42rem .85rem; cursor:pointer; transition:background .12s, border-color .12s
+}
+.acoes button:hover{background:var(--accent-soft); border-color:var(--accent)}
+.acoes button:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.acoes button:disabled{opacity:.5; cursor:default}
+.acoes button.principal{
+  background:var(--accent); border-color:var(--accent); color:var(--surface); font-weight:500
+}
+.acoes button.principal:hover{filter:brightness(1.1)}
+.acoes .aviso{font-size:.82rem; color:var(--muted)}
+
+@media print{
+  :root{
+    --ground:#fff; --surface:#fff; --surface-2:#f1f1f0;
+    --ink:#111; --ink-2:#333; --muted:#555;
+    --line:#ccc; --line-strong:#999;
+    --accent:#14655d; --accent-soft:#e9f1ef;
+    --alert:#9e3227; --alert-soft:#f8ece9;
+    --tint:20,101,93; --shadow:none;
+  }
+  .wrap{display:block; max-width:44rem; margin:0 auto}
+  .acoes{display:none}
+  figure{break-inside:avoid}
+  h1,h2,h3{break-after:avoid}
+  tr,.fase,ol.ressalvas li{break-inside:avoid}
+  header{padding-top:0}
+  section{padding-top:1.6rem}
+}
+
+@media (max-width:900px){
+  .wrap{grid-template-columns:[full-start wide-start text-start] 1fr [text-end wide-end full-end];
+    padding:0 1.15rem}
+  body{font-size:16px}
+  .meta{gap:.9rem 1.8rem}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important; transition:none!important}}
+</style>
+
+<div class="wrap">
+
+<header>
+  <p class="eyebrow">CONTEXTO, PROJETO, VERSAO</p>
+  <h1>Nome do experimento</h1>
+  <p class="standfirst">Uma frase dizendo o que se prediz, para quem, em que momento, e qual e
+  o achado principal. Se houve um erro corrigido, ele entra aqui.</p>
+  <div class="meta">
+    <div><b>000</b>pacientes</div>
+    <div><b>000</b>eventos (0%)</div>
+    <div><b>0</b>modelos</div>
+  </div>
+  <div class="acoes">
+    <button id="baixar" class="principal" hidden>Baixar o relatorio</button>
+    <button id="imprimir">Salvar em PDF</button>
+    <span class="aviso" id="aviso" role="status" aria-live="polite"></span>
+  </div>
+</header>
+
+<section>
+  <div class="sec-head"><span class="sec-num">01</span><h2>O achado</h2></div>
+  <div class="achado">
+    <span class="grande">+0,000</span>
+    <p>O numero que decide, com a frase que explica o que ele mede.</p>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><span class="sec-num">02</span><h2>Quem entra na analise</h2></div>
+  <div class="fluxo">
+    <div><span>Coorte inicial</span><b>000</b></div>
+    <div class="saiu"><span>excluidos: motivo</span><b>-00</b></div>
+    <div class="fica"><span>Analisados</span><b>000</b></div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><span class="sec-num">03</span><h2>O pipeline</h2></div>
+  <div class="fases">
+    <div class="fase"><span class="n">1</span><div>
+      <h3>Titulo da etapa</h3>
+      <p>O que ela faz.</p>
+      <p class="porque">Por que, em uma frase. O que quebra sem ela.</p>
+    </div></div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><span class="sec-num">04</span><h2>Resultado</h2></div>
+  <div class="tabela">
+    <table>
+      <caption>Legenda da tabela</caption>
+      <thead><tr><th>modelo</th><th>AUC</th><th>Brier</th></tr></thead>
+      <tbody>
+        <tr class="destaque"><td>Campeao</td><td class="num">0,000</td><td class="num">0,000</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="legenda">O que a tabela nao diz sozinha.</p>
+
+  <!-- {{fig01_nome_do_arquivo}} vira a figura results/fig01_nome_do_arquivo.png,
+       com a legenda que o pipeline gravou em results/legendas.json -->
+  {{fig01_TROQUE}}
+</section>
+
+<section>
+  <div class="sec-head"><span class="sec-num">05</span><h2>Ressalvas para o texto</h2></div>
+  <ol class="ressalvas">
+    <li><strong>Limite do desenho.</strong> O que essa analise nao pode concluir.</li>
+  </ol>
+</section>
+
+<section>
+  <div class="sec-head"><span class="sec-num">06</span><h2>Como reproduzir</h2></div>
+  <div class="arquivos">
+pipeline.py <span>codigo executavel, formato jupytext</span><br>
+results/ <span>figuras em 300 dpi e tabelas em csv</span>
+  </div>
+</section>
+
+<hr class="fina">
+<footer>
+  Todos os numeros desta pagina foram medidos na execucao de DATA sobre ARQUIVO.
+  Nenhum e estimado ou arredondado de memoria.
+</footer>
+
+</div>
+
+<script>
+(function () {
+  var botao = document.getElementById("baixar");
+  var aviso = document.getElementById("aviso");
+
+  // Imprimir funciona em qualquer lugar, inclusive numa copia salva fora do claude.ai.
+  document.getElementById("imprimir").addEventListener("click", function () {
+    window.print();
+  });
+
+  // O sandbox bloqueia download que a propria pagina dispara, entao o arquivo sai pela
+  // capability downloads, que mostra uma confirmacao para quem esta lendo.
+  if (!window.claude || typeof window.claude.use !== "function") return;
+
+  window.claude.use("downloads").then(function (downloads) {
+    if (!downloads) return;          // sem a capability, fica so o PDF
+    botao.hidden = false;
+
+    botao.addEventListener("click", function () {
+      botao.disabled = true;
+      aviso.textContent = "";
+
+      // Serializa uma copia, e nao o DOM vivo: na copia o botao volta a ficar escondido,
+      // porque fora do claude.ai ele nao teria como funcionar.
+      var copia = document.documentElement.cloneNode(true);
+      var botaoCopia = copia.querySelector("#baixar");
+      if (botaoCopia) botaoCopia.setAttribute("hidden", "");
+      var avisoCopia = copia.querySelector("#aviso");
+      if (avisoCopia) avisoCopia.textContent = "";
+
+      downloads.save({
+        filename: "predicao-obito-endocardite.html",
+        data: "<!doctype html>\n" + copia.outerHTML
+      }).then(function () {
+        aviso.textContent = "Arquivo salvo.";
+      }).catch(function (erro) {
+        var codigo = erro && erro.code;
+        if (codigo === "declined") {
+          aviso.textContent = "";
+        } else if (codigo === "rate_limited") {
+          aviso.textContent = "Já existe um pedido aberto. Tente de novo em instantes.";
+        } else {
+          aviso.textContent = "Não foi possível salvar. Use Salvar em PDF.";
+        }
+      }).then(function () {
+        botao.disabled = false;
+      });
+    });
+  });
+})();
+</script>

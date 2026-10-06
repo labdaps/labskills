@@ -75,10 +75,10 @@ Com base no conteúdo extraído e no pedido do usuário, classificar:
 
 | Tipo | Quando usar | Referência de layout |
 |---|---|---|
-| **Fluxograma** | Pipeline, algoritmo iterativo, processo com decisão | `references/layout_flowchart.md` |
-| **Diagrama de arquitetura** | Modelo ML, sistema com componentes, DAG | `references/layout_architecture.md` |
-| **Figura de resultado** | Tabela de métricas visual, comparação de modelos | `references/layout_results.md` |
-| **Diagrama conceitual** | Taxonomia, hierarquia, relação entre conceitos | `references/layout_conceptual.md` |
+| **Fluxograma** | Pipeline, algoritmo iterativo, processo com decisão | `"${CLAUDE_SKILL_DIR}/references/layout_flowchart.md"` |
+| **Diagrama de arquitetura** | Modelo ML, sistema com componentes, DAG | `"${CLAUDE_SKILL_DIR}/references/layout_architecture.md"` |
+| **Figura de resultado** | Tabela de métricas visual, comparação de modelos | `"${CLAUDE_SKILL_DIR}/references/layout_results.md"` |
+| **Diagrama conceitual** | Taxonomia, hierarquia, relação entre conceitos | adaptar `layout_architecture.md` |
 
 Se o usuário especificou o tipo, usar esse. Se não, inferir do conteúdo e confirmar:
 
@@ -112,7 +112,7 @@ MONO_B = '/usr/share/fonts/truetype/dejavu/DejaVuSansMono-Bold.ttf'
 - Texto alinhado à direita: `x - width, cy - height//2`
 - Verificar visualmente que nenhum elemento extrapola as bordas do canvas
 
-**Paleta e estilo**, ver `references/style_guide.md` para valores exatos.
+**Paleta e estilo**, ver `"${CLAUDE_SKILL_DIR}/references/style_guide.md"` para valores exatos.
 
 **Estrutura do código:**
 
@@ -132,7 +132,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 ### Passo 5: Preview e validação
 
-Antes de entregar, fazer `view` na imagem gerada para verificar:
+Antes de entregar, ler a imagem gerada com a ferramenta Read para verificar:
 
 - [ ] Nenhum texto cortado ou extrapolando bordas
 - [ ] Nenhum `□` (glifo ausente), se aparecer, substituir por ASCII equivalente
@@ -173,7 +173,7 @@ Incluir no texto:
 5. **Proporção retrato**, canvas altura > largura; eliminar espaço vazio com cálculo dinâmico de altura
 6. **Paleta neutra**, sem cores saturadas; máximo um tom de destaque (bordô ou navy)
 7. **Hierarquia legível**, título da fase bold 29px, título de card bold 30px, fórmula mono 28px, nota italic 23px (em 1890px de largura)
-8. **Preview obrigatório**, nunca entregar sem fazer `view` na imagem gerada
+8. **Preview obrigatório**, nunca entregar sem ler a imagem gerada com a ferramenta Read
 
 ---
 

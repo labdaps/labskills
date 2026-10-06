@@ -13,7 +13,7 @@ description: >
   de contribuição", "author contributions", "quem fez o quê no paper", "contribuição dos
   autores", "monta o CRediT", "credita os autores", "CRediT dos três autores", ou ao
   fechar um manuscrito que ainda não tem essa seção. NÃO confundir com /paper e
-  /paper-tex (que escrevem o manuscrito inteiro), /pubs (registra publicação) nem /lattes.
+  /artigo (que escrevem o manuscrito inteiro).
 ---
 
 # Skill: /author-credit: quem fez o quê, sem deduzir

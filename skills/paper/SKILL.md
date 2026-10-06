@@ -73,7 +73,7 @@ Regras de combinação que aparecem na prática:
 Confirmar o guideline com o usuário antes de escrever. Guideline errado significa
 reescrever o Methods inteiro depois.
 
-Depois de travado, ler o arquivo correspondente em `references/`:
+Depois de travado, ler o arquivo correspondente em `"${CLAUDE_SKILL_DIR}/references/"`:
 
 - `references/tripod-ai.md`, TRIPOD+AI e TRIPOD-LLM
 - `references/probast-ai.md`, PROBAST+AI (desenvolvimento e avaliação)
@@ -130,7 +130,7 @@ Ordem de escrita, que não é a ordem de leitura: **Methods → Results → Intr
 Discussion → Abstract → Título**. Methods e Results ancoram o que o resto pode afirmar;
 escrever a introdução antes convida a prometer o que os resultados não entregam.
 
-Entrega em `.docx` no padrão de submissão via `scripts/build_docx.js` (ver Passo 4).
+Entrega em `.docx` no padrão de submissão via `"${CLAUDE_SKILL_DIR}/scripts/build_docx.js"` (ver Passo 4).
 
 ### `/paper check`: auditar rascunho contra o checklist
 
@@ -224,5 +224,5 @@ Ao final de qualquer sub-comando, entregar no chat, em no máximo seis linhas:
 3. O item do checklist que mais provavelmente vira pedido de revisor.
 
 E oferecer o próximo passo pertinente: `/paper check` depois de um `full`, `/paper-png`
-para as figuras, `/red` para marcar no documento, `/eng` para polir o inglês, `/pubs`
-para registrar quando publicar.
+para as figuras, `/red` para marcar no documento, `/peer-review` para simular a revisão por
+pares, `/journal` para escolher o destino.

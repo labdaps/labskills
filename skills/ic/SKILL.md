@@ -13,7 +13,7 @@ description: >
   (pergunta objetivo, N, p, margem, confiança, perda, estratos e calcula n com
   correção finita, inflação por perda e precisão de Wilson) e ANALISAR (recebe
   avaliáveis e discordantes e devolve a taxa com IC de Wilson). Mostra sempre as
-  substituições. NÃO confundir com /papers nem /insights.
+  substituições. NÃO confundir com /papers nem /abstract.
 ---
 
 # Skill: /ic: Amostra Confiável e Intervalo de Confiança (sem código)

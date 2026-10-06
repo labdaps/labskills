@@ -250,7 +250,7 @@ Quando um fluxograma tem arco de retorno (loop):
 
 ## Checklist de validação antes de entregar
 
-Execute `view` na imagem e verifique cada item:
+Leia a imagem com a ferramenta Read e verifique cada item:
 
 ```
 [ ] Proporção W:H adequada ao tipo (sem espaço vazio > 10% do canvas)

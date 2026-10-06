@@ -11,8 +11,8 @@ description: >
   "revista sem taxa", "sem APC", "onde publicar isso", "qual journal de alto impacto pra esse
   paper", "essa revista é boa", "essa revista é predatória", "quanto custa publicar nessa
   revista", ou ao terminar um manuscrito e perguntar o destino. NÃO confundir com /paper e
-  /paper-tex (que escrevem o manuscrito), /paper cover (carta ao editor), /pubs (registra
-  publicação) nem /papers e /abstract (leem papers alheios).
+  /artigo (que escrevem o manuscrito), /paper cover (carta ao editor) nem /papers e /abstract
+  (leem papers alheios).
 ---
 
 # Skill: /journal: escolher onde submeter
@@ -266,9 +266,9 @@ Ao final de qualquer sub-comando, entregar:
 
 - o que ficou `[NÃO VERIFICADO: ...]` e por quê;
 - a decisão que a skill tomou por conta própria e que o usuário pode derrubar;
-- o próximo passo pertinente: `/paper cover` para a carta ao editor, `/paper check` ou
-  `/paper-tex check` para auditar o manuscrito contra o checklist antes de submeter, `/eng` para
-  polir o inglês, `/pubs` para registrar quando sair.
+- o próximo passo pertinente: `/paper cover` para a carta ao editor, `/paper check` para
+  auditar o manuscrito contra o checklist antes de submeter, `/peer-review` para simular a
+  revisão por pares.
 
 Lembrar o usuário de conferir o acordo transformativo da instituição antes de descartar uma gold OA
 por preço: é a checagem de maior retorno por minuto gasto em toda esta skill.

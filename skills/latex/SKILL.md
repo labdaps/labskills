@@ -12,8 +12,8 @@ description: >
   "exporta pro overleaf", "joga no prism", "manda o main.tex", "cola o latex aqui", "prepara pro
   arxiv", "transforma esse paper em latex", "converte pra tex", "junta tudo num arquivo só",
   "por que meu tex não compila fora da pasta", ou entregar um paper pedindo para levar a outro
-  editor. NÃO confundir com /paper-tex (que escreve o manuscrito e gera as tabelas e figuras dos
-  dados) nem com /paper (que escreve em .docx).
+  editor. NÃO confundir com /paper (que escreve o manuscrito em .docx) nem com /update-paper (que
+  atualiza números nos .tex).
 ---
 
 # Skill: /latex, levar um paper para outro lugar
@@ -103,7 +103,7 @@ arquivo. Isso derrubou a primeira versão deste próprio fluxo.
 
 ## Passo 4: gerar
 
-O script `scripts/flatten_tex.py` desta skill faz o achatamento:
+O script `"${CLAUDE_SKILL_DIR}/scripts/flatten_tex.py"` desta skill faz o achatamento:
 
 ```bash
 # editor online: main.tex mais as figuras soltas
@@ -224,5 +224,5 @@ Reportar sempre:
 - que as figuras foram entregues em PNG, e, quando também houver vetorial, qual é para ver e qual é
   para subir.
 
-Próximo passo pertinente: `/paper-tex check` para auditar o manuscrito antes de submeter, `/journal`
+Próximo passo pertinente: `/paper check` para auditar o manuscrito antes de submeter, `/journal`
 para escolher o destino, `/paper cover` para a carta ao editor.

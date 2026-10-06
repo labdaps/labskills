@@ -25,7 +25,7 @@ esta no documento?
 ### 1. Extrair o esqueleto
 
 ```bash
-python extrair_spec.py > spec_esqueleto.md      # na raiz do projeto
+python "${CLAUDE_SKILL_DIR}/scripts/extrair_spec.py" > spec_esqueleto.md      # na raiz do projeto
 ```
 
 Sai de la, verificavel:
@@ -57,7 +57,7 @@ depois de ler. Muda tudo:
 
 ### 3. Escrever
 
-Estrutura em `templates/spec_template.md`. As secoes que nunca saem:
+Estrutura em `"${CLAUDE_SKILL_DIR}/templates/spec_template.md"`. As secoes que nunca saem:
 
 1. **A pergunta e a decisao.** O que se prediz, para quem, em que momento, e que decisao clinica
    o resultado informa. Uma frase cada.

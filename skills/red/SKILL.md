@@ -10,8 +10,8 @@ description: >
   contrato/proposta/protocolo", "o que falta nesse documento", "faz a revisão crítica disso", 
   mesmo informal e mesmo sem dizer "vermelho". Também acionar quando anexar um documento e
   pedir opinião ou conferência antes de enviar a terceiros. O texto original NUNCA é alterado:
-  as sugestões são aditivas. NÃO confundir com /humanizar (reescreve a forma), /word e /report
-  (geram documento novo) nem /fact (checagem factual).
+  as sugestões são aditivas. NÃO confundir com /peer-review (nota e decisão editorial sobre o manuscrito)
+  nem /paper-review (leitura crítica de artigo alheio).
 ---
 
 # Skill: /red: Revisão crítica com marcação em vermelho
@@ -154,7 +154,7 @@ de inclusão não é edição do texto alheio.
 ## Passo 4: Conferir antes de entregar
 
 ```bash
-python -c "import docx; docx.Document('saida.docx')"   # abre sem erro = XML válido
+unzip -tq saida.docx                                    # o pacote OOXML continua íntegro
 soffice --headless --convert-to pdf saida.docx          # precisa de LibreOffice (command -v soffice)
 pdftoppm -jpeg -r 70 saida.pdf page
 ```

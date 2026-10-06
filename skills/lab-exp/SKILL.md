@@ -76,7 +76,7 @@ vale mais para o orientador do que qualquer AUC nova.
 
 ## Fase 2: montar o pipeline
 
-Copie `templates/pipeline.py` para a raiz do projeto como `pipeline.py` e preencha o que esta
+Copie `"${CLAUDE_SKILL_DIR}/templates/pipeline.py"` para a raiz do projeto como `pipeline.py` e preencha o que esta
 marcado. O que ja vem pronto e testado:
 
 | Peca | O que resolve |
@@ -124,7 +124,8 @@ saida e o arquivo no disco.
 
 ## Fase 4: entregaveis
 
-Nesta ordem, com os scripts em `scripts/` copiados para a raiz do projeto:
+Nesta ordem, depois de copiar os scripts da skill para a raiz do projeto
+(`cp "${CLAUDE_SKILL_DIR}/scripts/"*.py .`):
 
 ```bash
 python gerar_notebook.py     # pipeline.py -> <pasta>.ipynb, pronto para o Colab
@@ -140,11 +141,12 @@ checagem ignorava as linhas iniciadas por `!`, e so apareceu na execucao de verd
 O relatorio vai como artifact publicado, com `capabilities: {downloads: true}`, porque o sandbox
 bloqueia download que a propria pagina dispara e um `<a download>` seria botao morto. Carregue a
 skill `artifact-design` antes de escrever o template e a `artifact-capabilities` antes de
-declarar a capability. Use `templates/relatorio_template.html` como ponto de partida.
+declarar a capability. Use `"${CLAUDE_SKILL_DIR}/templates/relatorio_template.html"` como ponto de partida.
 
 ## Fase 5: repositorio
 
-`/repo` a partir da pasta existente, sempre privado.
+Criar o repositório privado a partir da pasta existente (`gh repo create --private --source=.`)
+e subir o primeiro commit.
 
 **`data/` nunca entra**, nem desidentificado: data de nascimento com data de internacao
 reidentifica. Antes do commit, varra os arquivos versionados procurando CPF, data de nascimento,

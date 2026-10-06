@@ -1,7 +1,7 @@
 ---
 name: desenho-metodologico
 description: >
-  Gera figura de desenho metodológico de artigo científico (graphical abstract, study design schematic, methods overview) em SVG vetorial, com exportação para PNG 300 dpi e PDF via Chrome headless, sem depender de cairo, Inkscape ou Illustrator. Extrai os números do próprio manuscrito, declara cada um como constante rastreável, monta o layout em faixas ou colunas, renderiza e inspeciona a imagem antes de entregar. Use SEMPRE que o usuário pedir "/desenho-metodologico", "faz a figura de metodologia", "monta o graphical abstract", "figura de desenho do estudo", "study design figure", "infográfico do artigo", "figura que resume o método", "diagrama de ponta a ponta do estudo", "flowchart do estudo", "figura de fluxo do paper", ou mandar um manuscrito pedindo uma imagem que consolide base, variáveis, metodologia e avaliação. Acionar também quando alguém disser que a figura do artigo está pobre, confusa ou que precisa de versão em paisagem ou retrato. NÃO confundir com /paper-png (converte página de PDF em imagem), /dataviz (gráficos de dados) nem /artigo (escreve o texto do manuscrito).
+  Gera figura de desenho metodológico de artigo científico (graphical abstract, study design schematic, methods overview) em SVG vetorial, com exportação para PNG 300 dpi e PDF via Chrome headless, sem depender de cairo, Inkscape ou Illustrator. Extrai os números do próprio manuscrito, declara cada um como constante rastreável, monta o layout em faixas ou colunas, renderiza e inspeciona a imagem antes de entregar. Use SEMPRE que o usuário pedir "/desenho-metodologico", "faz a figura de metodologia", "monta o graphical abstract", "figura de desenho do estudo", "study design figure", "infográfico do artigo", "figura que resume o método", "diagrama de ponta a ponta do estudo", "flowchart do estudo", "figura de fluxo do paper", ou mandar um manuscrito pedindo uma imagem que consolide base, variáveis, metodologia e avaliação. Acionar também quando alguém disser que a figura do artigo está pobre, confusa ou que precisa de versão em paisagem ou retrato. NÃO confundir com /paper-png (figura ilustrativa a partir do conteúdo de um paper, em PNG raster), /infografico (estilo colorido do laboratório) nem /artigo (escreve o texto do manuscrito).
 ---
 
 # /desenho-metodologico: figura de desenho de estudo pronta para submissão
@@ -47,7 +47,7 @@ Números que quase sempre entram numa figura de estudo preditivo:
 
 ## Passo 2: gerar por script, nunca desenhar à mão
 
-Copie `scripts/figkit.py` para a pasta de figuras do projeto e escreva um gerador em cima dele, usando `templates/build_figure.template.py` como ponto de partida.
+Copie `"${CLAUDE_SKILL_DIR}/scripts/figkit.py"` para a pasta de figuras do projeto e escreva um gerador em cima dele, usando `"${CLAUDE_SKILL_DIR}/templates/build_figure.template.py"` como ponto de partida.
 
 Motivo: quando o autor mudar um número (e ele vai mudar), a correção é uma linha e um reexport. Figura desenhada no Illustrator apodrece na primeira revisão.
 
@@ -119,7 +119,7 @@ O que sempre quebra:
 
 ## Passo 6: exportar
 
-`export.sh` usa o Chrome headless que já está instalado. Sem cairo, sem Inkscape, sem `pip install`. Ele lê largura e altura do próprio SVG, então mudar o tamanho da figura não exige mexer no script de conversão.
+`"${CLAUDE_SKILL_DIR}/scripts/export.sh"` usa o Chrome headless que já está instalado. Sem cairo, sem Inkscape, sem `pip install`. Ele lê largura e altura do próprio SVG, então mudar o tamanho da figura não exige mexer no script de conversão.
 
 Entregue três formatos: **SVG** (editável), **PDF** (vetorial, é o que a revista quer) e **PNG a 300 dpi** (para e-mail, slide e preview).
 

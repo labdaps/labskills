@@ -33,7 +33,7 @@ Mantenha o tópico curto (2-5 palavras-chave), sem conectores. Se o usuário já
 
 ## Passo 2: Rodar o script de varredura
 
-O script bundlado em `scripts/fetch_papers.py` faz todo o trabalho: bate nas 3 APIs em paralelo, parseia XML/JSON, filtra por data + relevância de IA, deduplica por DOI e devolve markdown pronto.
+O script bundlado em `"${CLAUDE_SKILL_DIR}/scripts/fetch_papers.py"` faz todo o trabalho: bate nas 3 APIs em paralelo, parseia XML/JSON, filtra por data + relevância de IA, deduplica por DOI e devolve markdown pronto.
 
 **Como invocar:**
 

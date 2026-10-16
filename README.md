@@ -14,7 +14,7 @@ As skills são distribuídas como plugins do Claude Code. Cada plugin agrupa as 
 |--------|--------|-----------------|
 | `grafo` | graph-lab | Em projeto que roda experimento: o ai-lab-hub exige o grafo antes de despachar os agentes. |
 | `ml` | ml-checkpoints, ml-pipeline, ml-eval-report, ml-timeseries | Em projeto que treina, ajusta ou avalia modelo. A ml-checkpoints é a norma de método do laboratório. |
-| `paper` | paper-review, peer-review, paper-scaffold, artigo, radar-academico, update-paper | Em projeto que busca literatura ou escreve artigo. |
+| `paper` | paper-review, peer-review, revisor, paper-scaffold, artigo, radar-academico, update-paper | Em projeto que busca literatura ou escreve artigo. |
 | `datasus` | datasus-outcome | No app lab-ai-prediction e em projeto que cria desfecho nele. |
 
 ### Plugin `grafo`
@@ -41,6 +41,7 @@ As skills são distribuídas como plugins do Claude Code. Cada plugin agrupa as 
 |-------|-----------|
 | [paper-review](skills/paper-review/SKILL.md) | Leitura crítica estruturada de artigo externo: resumo, metodologia, pontos fortes e fracos. |
 | [peer-review](skills/peer-review/SKILL.md) | Simula revisão por pares do seu próprio manuscrito antes de submeter: nota 1-5 por dimensão (Abstract, Métodos, Resultados, etc.), lista de revisões prioritárias e decisão editorial (Aceito / Revisões menores / Revisões maiores / Rejeitar). |
+| [revisor](skills/revisor/SKILL.md) | Revisão pré-submissão do manuscrito na lente do laboratório, como o Revisor 2 mais exigente: tempo zero e vazamento, validação com IC, calibração antes de discriminação, equidade e multicalibração, utilidade clínica, reprodutibilidade, números recalculados em python e referências conferidas; entrega bloqueadores, maiores, análises viáveis com os dados existentes e menores, cada um com a correção concreta. |
 | [paper-scaffold](skills/paper-scaffold/SKILL.md) | Estrutura de artigo com seções, checklist e template LaTeX/Markdown. |
 | [artigo](skills/artigo/SKILL.md) | Pipeline em 7 fases de escrita de artigo em IA médica com reporting guidelines (TRIPOD+AI, STROBE, PRISMA, CONSORT, STARD). |
 | [radar-academico](skills/radar-academico/SKILL.md) | Busca semanal de papers por tema, filtra, baixa PDFs e resume. |

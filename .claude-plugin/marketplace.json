@@ -42,12 +42,13 @@
     },
     {
       "name": "paper",
-      "description": "Pesquisa e escrita científica: busca de literatura (radar-academico, papers), leitura e triagem (paper-review, abstract), estrutura e redação com reporting guidelines (paper-scaffold, artigo, paper), autoria CRediT, escolha de periódico, revisão em vermelho e por pares simulada, figuras (paper-png, desenho-metodologico, infografico), exportação LaTeX e atualização de resultados.",
+      "description": "Pesquisa e escrita científica: busca de literatura (radar-academico, papers), leitura e triagem (paper-review, abstract), estrutura e redação com reporting guidelines (paper-scaffold, artigo, paper), autoria CRediT, escolha de periódico, revisão em vermelho, por pares simulada e pré-submissão na lente do laboratório (revisor), figuras (paper-png, desenho-metodologico, infografico), exportação LaTeX e atualização de resultados.",
       "source": "./",
       "strict": false,
       "skills": [
         "./skills/paper-review",
         "./skills/peer-review",
+        "./skills/revisor",
         "./skills/paper-scaffold",
         "./skills/artigo",
         "./skills/radar-academico",
